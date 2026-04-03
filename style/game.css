@@ -122,12 +122,7 @@
 }
 
 .country.hint {
-  animation: hint-pulse 1.2s ease-in-out infinite;
-}
-
-@keyframes hint-pulse {
-  0%, 100% { filter: drop-shadow(0 0 3px rgba(212,97,74,0.35)); }
-  50%       { filter: drop-shadow(0 0 12px rgba(212,97,74,0.85)); }
+  fill: #f0b429;
 }
 
 .country.gave-up {
