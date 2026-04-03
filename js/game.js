@@ -183,6 +183,22 @@
       return c ? c.id : null;
     });
 
+  // Render labels at centroid of each path feature
+  g.selectAll('text.country-label')
+    .data(filteredFeatures)
+    .join('text')
+    .attr('class', 'country-label')
+    .attr('data-label-id', d => {
+      const c = countryByFeatureId.get(String(d.id));
+      return c ? c.id : null;
+    })
+    .attr('x', d => pathGen.centroid(d)[0])
+    .attr('y', d => pathGen.centroid(d)[1])
+    .text(d => {
+      const c = countryByFeatureId.get(String(d.id));
+      return c ? c.name : '';
+    });
+
   // Render marker circles (microstates, Kosovo)
   const markerCountries = mapConfig.countries.filter(c => c.isMarker);
   g.selectAll('circle.country')
@@ -202,6 +218,22 @@
     .append('title')
     .text(d => d.name);
 
+  // Render labels for marker countries (offset above the circle)
+  g.selectAll('text.marker-label')
+    .data(markerCountries)
+    .join('text')
+    .attr('class', 'country-label marker-label')
+    .attr('data-label-id', d => d.id)
+    .attr('x', d => {
+      const pt = proj([d.lng, d.lat]);
+      return pt ? pt[0] : -999;
+    })
+    .attr('y', d => {
+      const pt = proj([d.lng, d.lat]);
+      return pt ? pt[1] - 10 : -999;
+    })
+    .text(d => d.name);
+
   // Hide loading overlay
   if (mapLoading) mapLoading.style.display = 'none';
 
@@ -219,6 +251,14 @@
       g.selectAll('circle.country')
         .attr('cx', d => { const pt = newProj([d.lng, d.lat]); return pt ? pt[0] : -999; })
         .attr('cy', d => { const pt = newProj([d.lng, d.lat]); return pt ? pt[1] : -999; });
+
+      g.selectAll('text.country-label:not(.marker-label)')
+        .attr('x', d => newPathGen.centroid(d)[0])
+        .attr('y', d => newPathGen.centroid(d)[1]);
+
+      g.selectAll('text.marker-label')
+        .attr('x', d => { const pt = newProj([d.lng, d.lat]); return pt ? pt[0] : -999; })
+        .attr('y', d => { const pt = newProj([d.lng, d.lat]); return pt ? pt[1] - 10 : -999; });
     }, 200);
   });
 
@@ -298,6 +338,9 @@
     // Update SVG element
     const el = d3.select(`[data-country-id="${countryId}"]`);
     el.classed('found', true).classed('hint', false);
+
+    // Show label
+    d3.select(`[data-label-id="${countryId}"]`).classed('visible', true);
 
     // Brief flash-correct on the path
     el.classed('flash-correct', true);

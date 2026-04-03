@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
 }
 
@@ -11,12 +12,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 20px;
+  padding: 10px 24px;
   background: var(--surface);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1.5px solid var(--border);
   flex-shrink: 0;
   gap: 16px;
   flex-wrap: wrap;
+  box-shadow: 0 1px 6px rgba(42,32,22,0.06);
 }
 
 .game-topbar-left {
@@ -27,36 +29,39 @@
 
 .game-back-link {
   color: var(--text-muted);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  border: 1px solid var(--border);
-  padding: 5px 10px;
+  font-size: 13px;
+  border: 1.5px solid var(--border);
+  padding: 5px 12px;
   border-radius: var(--radius);
-  transition: color 0.2s, border-color 0.2s;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  font-family: var(--font-body);
 }
 
 .game-back-link:hover {
   color: var(--accent);
-  border-color: var(--accent-dim);
+  border-color: var(--accent);
+  background: var(--accent-light);
   text-decoration: none;
 }
 
 .game-map-label {
   font-family: var(--font-head);
-  font-style: italic;
-  font-size: 18px;
+  font-weight: 800;
+  font-size: 20px;
   color: var(--text);
 }
 
 .game-mode-badge {
-  font-size: 10px;
-  letter-spacing: 0.12em;
+  font-size: 11px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-muted);
-  border: 1px solid var(--border);
-  padding: 3px 8px;
-  border-radius: var(--radius);
+  color: var(--accent);
+  background: var(--accent-light);
+  border: 1.5px solid rgba(212,97,74,0.25);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-family: var(--font-body);
+  font-weight: 500;
 }
 
 .game-topbar-right {
@@ -67,19 +72,18 @@
 
 .game-timer {
   font-family: var(--font-mono);
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 500;
   color: var(--accent);
   letter-spacing: 0.04em;
-  min-width: 70px;
+  min-width: 74px;
   text-align: right;
 }
 
 .game-progress {
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-muted);
-  letter-spacing: 0.04em;
 }
 
 .game-progress .found-count {
@@ -106,14 +110,15 @@
 /* ── SVG Map Paths ─────────────────────────────────────────────── */
 .country {
   fill: var(--map-fill);
-  stroke: #6b5e42;
-  stroke-width: 0.4px;
+  stroke: #a8bccf;
+  stroke-width: 0.6px;
   transition: fill 0.4s ease;
   cursor: default;
 }
 
 .country.found {
   fill: var(--found);
+  stroke: #b04d38;
 }
 
 .country.hint {
@@ -121,31 +126,54 @@
 }
 
 @keyframes hint-pulse {
-  0%, 100% { filter: drop-shadow(0 0 3px rgba(201,168,76,0.4)); }
-  50%       { filter: drop-shadow(0 0 10px rgba(201,168,76,0.9)); }
+  0%, 100% { filter: drop-shadow(0 0 3px rgba(212,97,74,0.35)); }
+  50%       { filter: drop-shadow(0 0 12px rgba(212,97,74,0.85)); }
 }
 
 .country.flash-correct {
-  fill: var(--green) !important;
+  fill: #3a9e6a !important;
   transition: fill 0s;
 }
 
 .country.flash-wrong {
-  fill: var(--red) !important;
+  fill: #c0392b !important;
   transition: fill 0s;
 }
 
 /* Marker circles (microstates) */
 circle.country {
-  stroke-width: 1px;
+  stroke-width: 1.5px;
+}
+
+/* ── Country labels (shown on correct guess) ───────────────────── */
+.country-label {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  fill: #fff;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  paint-order: stroke fill;
+  stroke: rgba(0,0,0,0.18);
+  stroke-width: 2.5px;
+  stroke-linejoin: round;
+  letter-spacing: 0.03em;
+}
+
+.country-label.visible {
+  opacity: 1;
 }
 
 /* ── Bottom Panel ──────────────────────────────────────────────── */
 .game-bottom {
   flex-shrink: 0;
   background: var(--surface);
-  border-top: 1px solid var(--border);
-  padding: 14px 20px;
+  border-top: 1.5px solid var(--border);
+  padding: 16px 24px;
+  box-shadow: 0 -1px 6px rgba(42,32,22,0.05);
 }
 
 /* ── Input Area (Classic / Timer) ──────────────────────────────── */
@@ -160,55 +188,54 @@ circle.country {
   display: flex;
   gap: 10px;
   width: 100%;
-  max-width: 500px;
+  max-width: 520px;
 }
 
 #country-input {
   flex: 1;
-  background: var(--surface2);
-  border: 1px solid var(--border);
+  background: var(--bg);
+  border: 2px solid var(--border);
   border-radius: var(--radius);
   color: var(--text);
-  font-family: var(--font-mono);
-  font-size: 15px;
-  padding: 10px 14px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  padding: 11px 16px;
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  letter-spacing: 0.04em;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 
 #country-input::placeholder { color: var(--text-muted); }
 
 #country-input:focus {
-  border-color: var(--accent-dim);
-  box-shadow: 0 0 0 2px rgba(201,168,76,0.12);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(212,97,74,0.12);
 }
 
 #country-input.flash-correct {
   border-color: var(--green);
-  box-shadow: 0 0 0 2px rgba(74,140,92,0.25);
+  box-shadow: 0 0 0 3px rgba(46,125,82,0.18);
 }
 
 #country-input.flash-wrong {
   border-color: var(--red);
-  box-shadow: 0 0 0 2px rgba(176,64,64,0.25);
+  box-shadow: 0 0 0 3px rgba(192,57,43,0.18);
 }
 
 /* Hint / feedback text */
 #hint-text {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--accent-dim);
-  letter-spacing: 0.04em;
-  height: 18px;
-  transition: opacity 0.2s;
+  height: 20px;
+  font-family: var(--font-body);
 }
 
 #feedback-text {
-  font-size: 12px;
-  height: 18px;
+  font-size: 13px;
+  height: 20px;
+  font-family: var(--font-body);
 }
 
-#feedback-text.correct { color: var(--green); }
+#feedback-text.correct { color: var(--green); font-weight: 500; }
 #feedback-text.wrong   { color: var(--red); }
 
 /* ── Choice Area (Multiple Choice) ────────────────────────────── */
@@ -216,14 +243,16 @@ circle.country {
   display: none;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .choice-prompt {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-muted);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
+  font-family: var(--font-body);
+  font-weight: 500;
 }
 
 .choice-buttons {
@@ -231,37 +260,38 @@ circle.country {
   flex-wrap: wrap;
   gap: 10px;
   justify-content: center;
-  max-width: 600px;
+  max-width: 640px;
 }
 
 .choice-btn {
-  padding: 11px 22px;
-  border: 1px solid var(--border);
-  background: var(--surface2);
+  padding: 12px 24px;
+  border: 2px solid var(--border);
+  background: var(--bg);
   color: var(--text);
-  font-family: var(--font-mono);
-  font-size: 13px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 500;
   border-radius: var(--radius);
   cursor: pointer;
   transition: border-color 0.15s, background 0.15s;
-  min-width: 130px;
+  min-width: 140px;
   text-align: center;
 }
 
 .choice-btn:hover {
-  border-color: var(--accent-dim);
-  background: rgba(201,168,76,0.06);
+  border-color: var(--accent);
+  background: var(--accent-light);
 }
 
 .choice-btn.flash-correct {
   border-color: var(--green);
-  background: rgba(74,140,92,0.15);
+  background: rgba(46,125,82,0.1);
   color: var(--green);
 }
 
 .choice-btn.flash-wrong {
   border-color: var(--red);
-  background: rgba(176,64,64,0.15);
+  background: rgba(192,57,43,0.08);
   color: var(--red);
 }
 
@@ -270,19 +300,20 @@ circle.country {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(10,9,8,0.82);
+  background: rgba(42,32,22,0.45);
   z-index: 100;
   align-items: center;
   justify-content: center;
   padding: 20px;
+  backdrop-filter: blur(3px);
 }
 
 .modal-backdrop.visible { display: flex; }
 
 .modal {
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
   width: 100%;
   max-width: 520px;
   padding: 36px 36px 28px;
@@ -290,13 +321,14 @@ circle.country {
   flex-direction: column;
   gap: 20px;
   position: relative;
+  box-shadow: 0 16px 48px rgba(42,32,22,0.16);
 }
 
 .modal-title {
-  font-size: 28px;
+  font-size: 32px;
   font-family: var(--font-head);
+  font-weight: 900;
   color: var(--accent);
-  font-style: italic;
 }
 
 .modal-stats {
@@ -307,22 +339,24 @@ circle.country {
 
 .stat-box {
   background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
   padding: 14px 16px;
 }
 
 .stat-label {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--text-muted);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   margin-bottom: 4px;
+  font-family: var(--font-body);
+  font-weight: 500;
 }
 
 .stat-value {
   font-family: var(--font-mono);
-  font-size: 22px;
+  font-size: 24px;
   color: var(--text);
   font-weight: 500;
 }
@@ -330,14 +364,15 @@ circle.country {
 .stat-value.highlight { color: var(--accent); }
 
 .modal-pb-badge {
-  background: rgba(201,168,76,0.1);
-  border: 1px solid var(--accent-dim);
+  background: var(--accent-light);
+  border: 1.5px solid rgba(212,97,74,0.3);
   border-radius: var(--radius);
   padding: 10px 16px;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--accent);
-  letter-spacing: 0.04em;
+  font-weight: 600;
   text-align: center;
+  font-family: var(--font-body);
 }
 
 .modal-submit-row {
@@ -347,24 +382,24 @@ circle.country {
 
 #player-name-input {
   flex: 1;
-  background: var(--surface2);
-  border: 1px solid var(--border);
+  background: var(--bg);
+  border: 2px solid var(--border);
   border-radius: var(--radius);
   color: var(--text);
-  font-family: var(--font-mono);
-  font-size: 14px;
-  padding: 9px 12px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  padding: 10px 14px;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.15s;
 }
 
 #player-name-input::placeholder { color: var(--text-muted); }
-#player-name-input:focus { border-color: var(--accent-dim); }
+#player-name-input:focus { border-color: var(--accent); }
 
 .modal-error {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--red);
-  min-height: 16px;
+  min-height: 18px;
 }
 
 .modal-actions {
@@ -375,26 +410,25 @@ circle.country {
 
 /* Leaderboard in modal */
 .modal-leaderboard {
-  border-top: 1px solid var(--border);
+  border-top: 1.5px solid var(--border);
   padding-top: 20px;
 }
 
 .modal-leaderboard h3 {
-  font-size: 13px;
-  letter-spacing: 0.1em;
+  font-size: 12px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-muted);
   margin-bottom: 12px;
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-weight: 500;
 }
 
 /* ── Personal Best Indicator ───────────────────────────────────── */
 .pb-indicator {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-muted);
-  letter-spacing: 0.04em;
 }
 
 .pb-indicator .pb-value { color: var(--accent-dim); }
@@ -407,10 +441,11 @@ circle.country {
   align-items: center;
   justify-content: center;
   background: var(--bg);
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-muted);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   z-index: 10;
+  font-family: var(--font-body);
 }
 
 /* ── Error State ───────────────────────────────────────────────── */
@@ -428,40 +463,34 @@ circle.country {
 
 .error-box {
   background: var(--surface);
-  border: 1px solid var(--red);
-  border-radius: var(--radius);
-  padding: 24px 32px;
+  border: 1.5px solid var(--red);
+  border-radius: 12px;
+  padding: 28px 36px;
   text-align: center;
   max-width: 380px;
+  box-shadow: var(--shadow);
 }
 
 .error-box h2 {
   color: var(--red);
-  font-size: 18px;
+  font-size: 20px;
   margin-bottom: 10px;
 }
 
 .error-box p {
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.7;
 }
 
 /* ── Responsive ────────────────────────────────────────────────── */
 @media (max-width: 600px) {
-  .game-topbar {
-    padding: 8px 14px;
-    gap: 10px;
-  }
-
-  .game-map-label { font-size: 15px; }
-  .game-timer { font-size: 18px; }
-
-  .game-bottom { padding: 12px 14px; }
-
+  .game-topbar { padding: 8px 16px; gap: 10px; }
+  .game-map-label { font-size: 17px; }
+  .game-timer { font-size: 20px; }
+  .game-bottom { padding: 12px 16px; }
   .choice-buttons { gap: 8px; }
-  .choice-btn { min-width: 110px; font-size: 12px; padding: 9px 14px; }
-
+  .choice-btn { min-width: 120px; font-size: 13px; padding: 10px 14px; }
   .modal { padding: 24px 20px 20px; }
   .modal-stats { grid-template-columns: 1fr 1fr; }
   .modal-submit-row { flex-direction: column; }
