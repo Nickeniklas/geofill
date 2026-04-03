@@ -320,6 +320,15 @@
       return;
     }
 
+    // Already found?
+    const allCountries = state.mapConfig ? state.mapConfig.countries : [];
+    const alreadyFound = window.findExactMatch(raw, allCountries.filter(c => state.found.has(c.id)));
+    if (alreadyFound) {
+      flashInput('already');
+      showFeedback(`Already found ${alreadyFound.name}`, 'already');
+      return;
+    }
+
     // Near-miss fuzzy hint — only on Enter, max distance 2
     const nearMiss = window.findNearMiss(raw, remainingArr, 2);
     if (nearMiss) {

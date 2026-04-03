@@ -221,6 +221,11 @@ circle.country {
   box-shadow: 0 0 0 3px rgba(192,57,43,0.18);
 }
 
+#country-input.flash-already {
+  border-color: #e0a020;
+  box-shadow: 0 0 0 3px rgba(224,160,32,0.22);
+}
+
 /* Hint / feedback text */
 #hint-text {
   font-size: 13px;
@@ -235,8 +240,9 @@ circle.country {
   font-family: var(--font-body);
 }
 
-#feedback-text.correct { color: var(--green); font-weight: 500; }
-#feedback-text.wrong   { color: var(--red); }
+#feedback-text.correct  { color: var(--green); font-weight: 500; }
+#feedback-text.wrong    { color: var(--red); }
+#feedback-text.already  { color: #b07a10; }
 
 /* ── Choice Area (Multiple Choice) ────────────────────────────── */
 #choice-area {
