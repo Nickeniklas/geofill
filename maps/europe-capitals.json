@@ -1,0 +1,294 @@
+{
+  "id": "europe-capitals",
+  "label": "European Capitals",
+  "description": "44 European capital cities",
+  "topoJsonUrl": "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
+  "topoJsonObjectKey": "countries",
+  "viewBox": "0 0 960 600",
+  "projectionConfig": {
+    "type": "mercator",
+    "center": [15, 54],
+    "scale": 500
+  },
+  "countries": [
+    {
+      "id": "albania",
+      "name": "Tirana",
+      "isoNumeric": "008",
+      "aliases": ["tirane"]
+    },
+    {
+      "id": "andorra",
+      "name": "Andorra la Vella",
+      "isoNumeric": "020",
+      "isMarker": true,
+      "lat": 42.5063,
+      "lng": 1.5218,
+      "aliases": ["andorra"]
+    },
+    {
+      "id": "austria",
+      "name": "Vienna",
+      "isoNumeric": "040",
+      "aliases": ["wien"]
+    },
+    {
+      "id": "belarus",
+      "name": "Minsk",
+      "isoNumeric": "112",
+      "aliases": []
+    },
+    {
+      "id": "belgium",
+      "name": "Brussels",
+      "isoNumeric": "056",
+      "aliases": ["bruxelles", "brussel"]
+    },
+    {
+      "id": "bosnia",
+      "name": "Sarajevo",
+      "isoNumeric": "070",
+      "aliases": []
+    },
+    {
+      "id": "bulgaria",
+      "name": "Sofia",
+      "isoNumeric": "100",
+      "aliases": ["sofiya"]
+    },
+    {
+      "id": "croatia",
+      "name": "Zagreb",
+      "isoNumeric": "191",
+      "aliases": []
+    },
+    {
+      "id": "cyprus",
+      "name": "Nicosia",
+      "isoNumeric": "196",
+      "aliases": ["lefkosia"]
+    },
+    {
+      "id": "czechia",
+      "name": "Prague",
+      "isoNumeric": "203",
+      "aliases": ["praha"]
+    },
+    {
+      "id": "denmark",
+      "name": "Copenhagen",
+      "isoNumeric": "208",
+      "aliases": ["kobenhavn"]
+    },
+    {
+      "id": "estonia",
+      "name": "Tallinn",
+      "isoNumeric": "233",
+      "aliases": ["tallin"]
+    },
+    {
+      "id": "finland",
+      "name": "Helsinki",
+      "isoNumeric": "246",
+      "aliases": ["helsingfors"]
+    },
+    {
+      "id": "france",
+      "name": "Paris",
+      "isoNumeric": "250",
+      "aliases": []
+    },
+    {
+      "id": "germany",
+      "name": "Berlin",
+      "isoNumeric": "276",
+      "aliases": []
+    },
+    {
+      "id": "greece",
+      "name": "Athens",
+      "isoNumeric": "300",
+      "aliases": ["athina", "athinai"]
+    },
+    {
+      "id": "hungary",
+      "name": "Budapest",
+      "isoNumeric": "348",
+      "aliases": []
+    },
+    {
+      "id": "iceland",
+      "name": "Reykjavik",
+      "isoNumeric": "352",
+      "aliases": []
+    },
+    {
+      "id": "ireland",
+      "name": "Dublin",
+      "isoNumeric": "372",
+      "aliases": []
+    },
+    {
+      "id": "italy",
+      "name": "Rome",
+      "isoNumeric": "380",
+      "aliases": ["roma"]
+    },
+    {
+      "id": "kosovo",
+      "name": "Pristina",
+      "isoNumeric": "383",
+      "isMarker": true,
+      "lat": 42.6026,
+      "lng": 20.9030,
+      "aliases": ["prishtina", "prishtine"]
+    },
+    {
+      "id": "latvia",
+      "name": "Riga",
+      "isoNumeric": "428",
+      "aliases": []
+    },
+    {
+      "id": "liechtenstein",
+      "name": "Vaduz",
+      "isoNumeric": "438",
+      "isMarker": true,
+      "lat": 47.1660,
+      "lng": 9.5554,
+      "aliases": []
+    },
+    {
+      "id": "lithuania",
+      "name": "Vilnius",
+      "isoNumeric": "440",
+      "aliases": ["wilno"]
+    },
+    {
+      "id": "luxembourg",
+      "name": "Luxembourg",
+      "isoNumeric": "442",
+      "aliases": ["luxembourg city", "luxemburg"]
+    },
+    {
+      "id": "malta",
+      "name": "Valletta",
+      "isoNumeric": "470",
+      "aliases": ["valetta"]
+    },
+    {
+      "id": "moldova",
+      "name": "Chisinau",
+      "isoNumeric": "498",
+      "aliases": ["kishinev"]
+    },
+    {
+      "id": "monaco",
+      "name": "Monaco",
+      "isoNumeric": "492",
+      "isMarker": true,
+      "lat": 43.7384,
+      "lng": 7.4246,
+      "aliases": ["monaco ville"]
+    },
+    {
+      "id": "montenegro",
+      "name": "Podgorica",
+      "isoNumeric": "499",
+      "aliases": ["titograd"]
+    },
+    {
+      "id": "netherlands",
+      "name": "Amsterdam",
+      "isoNumeric": "528",
+      "aliases": []
+    },
+    {
+      "id": "north-macedonia",
+      "name": "Skopje",
+      "isoNumeric": "807",
+      "aliases": ["skoplje"]
+    },
+    {
+      "id": "norway",
+      "name": "Oslo",
+      "isoNumeric": "578",
+      "aliases": []
+    },
+    {
+      "id": "poland",
+      "name": "Warsaw",
+      "isoNumeric": "616",
+      "aliases": ["warszawa"]
+    },
+    {
+      "id": "portugal",
+      "name": "Lisbon",
+      "isoNumeric": "620",
+      "aliases": ["lisboa"]
+    },
+    {
+      "id": "romania",
+      "name": "Bucharest",
+      "isoNumeric": "642",
+      "aliases": ["bucuresti"]
+    },
+    {
+      "id": "san-marino",
+      "name": "San Marino",
+      "isoNumeric": "674",
+      "isMarker": true,
+      "lat": 43.9424,
+      "lng": 12.4578,
+      "aliases": ["city of san marino"]
+    },
+    {
+      "id": "serbia",
+      "name": "Belgrade",
+      "isoNumeric": "688",
+      "aliases": ["beograd"]
+    },
+    {
+      "id": "slovakia",
+      "name": "Bratislava",
+      "isoNumeric": "703",
+      "aliases": []
+    },
+    {
+      "id": "slovenia",
+      "name": "Ljubljana",
+      "isoNumeric": "705",
+      "aliases": ["laibach"]
+    },
+    {
+      "id": "spain",
+      "name": "Madrid",
+      "isoNumeric": "724",
+      "aliases": []
+    },
+    {
+      "id": "sweden",
+      "name": "Stockholm",
+      "isoNumeric": "752",
+      "aliases": []
+    },
+    {
+      "id": "switzerland",
+      "name": "Bern",
+      "isoNumeric": "756",
+      "aliases": ["berne"]
+    },
+    {
+      "id": "ukraine",
+      "name": "Kyiv",
+      "isoNumeric": "804",
+      "aliases": ["kiev"]
+    },
+    {
+      "id": "united-kingdom",
+      "name": "London",
+      "isoNumeric": "826",
+      "aliases": []
+    }
+  ]
+}
