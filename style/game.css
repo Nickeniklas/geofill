@@ -447,15 +447,6 @@ circle.country {
   font-weight: 500;
 }
 
-/* ── Personal Best Indicator ───────────────────────────────────── */
-.pb-indicator {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--text-muted);
-}
-
-.pb-indicator .pb-value { color: var(--accent-dim); }
-
 /* ── Loading State ─────────────────────────────────────────────── */
 #map-loading {
   position: absolute;

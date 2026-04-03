@@ -6,7 +6,7 @@ Static browser geography game hosted on GitHub Pages.
 No build step, no npm, no framework. Pure HTML + CSS + JS.
 
 Player fills a map by typing country/state names (or clicking in Multiple Choice mode).
-Three game modes. Leaderboard stored in Supabase.
+Two game modes: Classic and Multiple Choice. Leaderboard stored in Supabase.
 
 ---
 
@@ -18,7 +18,7 @@ game.html           Game screen — map + input + leaderboard modal
 config.js           Supabase URL + anon key (safe to commit, anon key is public)
 style/main.css      Shared theme, custom properties, home screen styles
 style/game.css      Game-specific styles, SVG rules, animations, modal
-js/game.js          Core engine: D3 map rendering, all 3 game modes, completion flow
+js/game.js          Core engine: D3 map rendering, both game modes, completion flow
 js/leaderboard.js   Supabase read/write, table renderer
 js/fuzzy.js         Levenshtein distance, normalize(), findNearMiss(), findExactMatch()
 maps/europe.json    44 European countries (39 polygons + 5 point markers)
@@ -172,17 +172,9 @@ Must use HTTP — not `file://` — because the game fetches JSON files and CDN 
 | mode param | Name | Behaviour |
 |-----------|------|-----------|
 | `classic` | Classic | Free typing, timer counts up from first keystroke |
-| `timer` | Timer Challenge | Same as classic + personal best stored in localStorage |
 | `choice` | Multiple Choice | Map highlights a random region, 4 buttons appear |
 
 URL format: `game.html?map=europe&mode=classic`
-
----
-
-## Personal best storage
-
-Key: `geofill_pb_{mapId}_{mode}` — value is elapsed seconds as a string.
-Only `classic` and `timer` modes track personal best.
 
 ---
 

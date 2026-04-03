@@ -28,7 +28,6 @@
   const timerDisplay   = document.getElementById('timer-display');
   const foundCountEl   = document.getElementById('found-count');
   const totalCountEl   = document.getElementById('total-count');
-  const pbIndicator    = document.getElementById('pb-indicator');
   const mapLabelEl     = document.getElementById('game-map-label');
   const modeBadgeEl    = document.getElementById('game-mode-badge');
   const choiceButtons  = Array.from(document.querySelectorAll('.choice-btn'));
@@ -85,10 +84,6 @@
     return state.mapConfig.countries.filter(c => state.remaining.has(c.id));
   }
 
-  function pbKey() {
-    return `geofill_pb_${state.mapConfig.id}_${state.mode}`;
-  }
-
   // ── 5. Load Map Config ─────────────────────────────────────────
   let mapConfig;
   try {
@@ -110,15 +105,6 @@
   if (totalCountEl) totalCountEl.textContent = mapConfig.countries.length;
   if (foundCountEl) foundCountEl.textContent = 0;
   if (timerDisplay) timerDisplay.textContent = '00:00';
-
-  // Show personal best if Timer mode
-  if (mode === 'timer' && pbIndicator) {
-    const pb = localStorage.getItem(pbKey());
-    if (pb) {
-      pbIndicator.innerHTML = `PB <span class="pb-value">${formatTime(parseInt(pb, 10))}</span>`;
-      pbIndicator.style.display = '';
-    }
-  }
 
   // ── 6. D3 Map Rendering ────────────────────────────────────────
   const d3 = window.d3;
@@ -427,7 +413,7 @@
     state.remaining.clear();
     state.isComplete = true;
 
-    setTimeout(() => showCompletionModal(state.elapsedSeconds, false), 400);
+    setTimeout(() => showCompletionModal(state.elapsedSeconds), 400);
   }
 
   // ── 12. Multiple Choice Mode ───────────────────────────────────
@@ -500,35 +486,17 @@
     // Remove hint glow
     d3.selectAll('.country').classed('hint', false);
 
-    // Check personal best (classic + timer modes)
-    let isNewPb = false;
-    if (mode === 'classic' || mode === 'timer') {
-      const prev = parseInt(localStorage.getItem(pbKey()), 10);
-      if (!prev || elapsed < prev) {
-        localStorage.setItem(pbKey(), elapsed);
-        isNewPb = true;
-      }
-    }
-
     // Show completion modal
-    showCompletionModal(elapsed, isNewPb);
+    showCompletionModal(elapsed);
   }
 
-  function showCompletionModal(elapsed, isNewPb) {
+  function showCompletionModal(elapsed) {
     if (modalTitle) {
       modalTitle.textContent = state.gaveUp ? 'Gave Up' : 'Complete!';
     }
     if (modalTime) modalTime.textContent = formatTime(elapsed);
     if (modalScore) modalScore.textContent = `${state.found.size} / ${state.mapConfig.countries.length}`;
-
-    if (modalPbBadge) {
-      if (isNewPb && (mode === 'classic' || mode === 'timer')) {
-        modalPbBadge.textContent = '★ New Personal Best!';
-        modalPbBadge.style.display = '';
-      } else {
-        modalPbBadge.style.display = 'none';
-      }
-    }
+    if (modalPbBadge) modalPbBadge.style.display = 'none';
 
     // Load leaderboard
     window.Leaderboard.loadAndRenderLeaderboard(mapId, mode, lbContainer);
@@ -617,7 +585,7 @@
   }
 
   function modeName(m) {
-    return { classic: 'Classic', timer: 'Timer Challenge', choice: 'Multiple Choice' }[m] || m;
+    return { classic: 'Classic', choice: 'Multiple Choice' }[m] || m;
   }
 
   // ── 15. Projection Factory ─────────────────────────────────────
