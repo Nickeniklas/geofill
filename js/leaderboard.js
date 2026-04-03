@@ -34,7 +34,7 @@
    * @param {number} params.totalCount
    * @returns {Promise<void>}
    */
-  async function submitScore({ playerName, mapId, mode, timeSeconds, foundCount, totalCount }) {
+  async function submitScore({ playerName, mapId, mode, timeSeconds, foundCount, totalCount, gaveUp = false }) {
     const client = getClient();
     if (!client) throw new Error('Leaderboard not available');
 
@@ -44,7 +44,8 @@
       mode: mode,
       time_seconds: timeSeconds,
       found_count: foundCount,
-      total_count: totalCount
+      total_count: totalCount,
+      gave_up: gaveUp
     }]);
 
     if (error) throw error;
@@ -64,9 +65,10 @@
 
     const { data, error } = await client
       .from('scores')
-      .select('player_name, time_seconds, found_count, total_count, created_at')
+      .select('player_name, time_seconds, found_count, total_count, gave_up, created_at')
       .eq('map_id', mapId)
       .eq('mode', mode)
+      .order('found_count', { ascending: false })
       .order('time_seconds', { ascending: true })
       .limit(limit);
 
@@ -113,9 +115,10 @@
       const tr = document.createElement('tr');
       const date = new Date(row.created_at);
       const dateStr = date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: '2-digit' });
+      const gaveUpBadge = row.gave_up ? '<span class="lb-gaveup">✗</span>' : '';
       tr.innerHTML = `
         <td class="lb-rank">${i + 1}</td>
-        <td>${escapeHtml(row.player_name)}</td>
+        <td>${escapeHtml(row.player_name)}${gaveUpBadge}</td>
         <td class="lb-time">${formatTime(row.time_seconds)}</td>
         <td>${row.found_count}/${row.total_count}</td>
         <td class="lb-date">${dateStr}</td>

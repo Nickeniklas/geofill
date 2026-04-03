@@ -130,6 +130,12 @@
   50%       { filter: drop-shadow(0 0 12px rgba(212,97,74,0.85)); }
 }
 
+.country.gave-up {
+  fill: #b0bec5 !important;
+  stroke: #78909c;
+  transition: fill 0.5s ease;
+}
+
 .country.flash-correct {
   fill: #3a9e6a !important;
   transition: fill 0s;
@@ -174,6 +180,17 @@ circle.country {
   border-top: 1.5px solid var(--border);
   padding: 16px 24px;
   box-shadow: 0 -1px 6px rgba(42,32,22,0.05);
+}
+
+#give-up-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+#give-up-row .btn {
+  font-size: 12px;
+  padding: 6px 16px;
 }
 
 /* ── Input Area (Classic / Timer) ──────────────────────────────── */

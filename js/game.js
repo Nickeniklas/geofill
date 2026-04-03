@@ -54,8 +54,12 @@
     startTime:     null,
     timerInterval: null,
     isComplete:    false,
+    gaveUp:        false,
     currentChoice: null,   // for Multiple Choice mode
-    elapsedSeconds: 0
+    elapsedSeconds: 0,
+    hintedIds:     new Set(),
+    hintInterval:  null,
+    hintTimeout:   null
   };
 
   // ── 4. Helpers ─────────────────────────────────────────────────
@@ -263,6 +267,9 @@
   });
 
   // ── 8. Mode Setup ──────────────────────────────────────────────
+  const giveUpBtn = document.getElementById('give-up-btn');
+  if (giveUpBtn) giveUpBtn.addEventListener('click', triggerGiveUp);
+
   if (mode === 'choice') {
     if (inputArea)  inputArea.style.display  = 'none';
     if (choiceArea) choiceArea.style.display = 'flex';
@@ -345,6 +352,7 @@
     state.remaining.delete(countryId);
 
     // Update SVG element
+    state.hintedIds.delete(countryId);
     const el = d3.select(`[data-country-id="${countryId}"]`);
     el.classed('found', true).classed('hint', false);
 
@@ -371,13 +379,55 @@
       state.elapsedSeconds = Math.floor((Date.now() - state.startTime) / 1000);
       if (timerDisplay) timerDisplay.textContent = formatTime(state.elapsedSeconds);
     }, 500);
+
+    // Schedule auto-hints for classic/timer modes (first at 10 min, then every 2 min)
+    if (mode !== 'choice') {
+      state.hintTimeout = setTimeout(() => {
+        triggerAutoHint();
+        state.hintInterval = setInterval(triggerAutoHint, 120_000);
+      }, 600_000);
+    }
   }
 
   function stopTimer() {
     clearInterval(state.timerInterval);
+    clearTimeout(state.hintTimeout);
+    clearInterval(state.hintInterval);
     state.timerInterval = null;
+    state.hintTimeout = null;
+    state.hintInterval = null;
     state.elapsedSeconds = Math.floor((Date.now() - state.startTime) / 1000);
     if (timerDisplay) timerDisplay.textContent = formatTime(state.elapsedSeconds);
+  }
+
+  function triggerAutoHint() {
+    if (state.isComplete) return;
+    const unhinted = getRemainingCountries().filter(c => !state.hintedIds.has(c.id));
+    if (unhinted.length === 0) {
+      clearInterval(state.hintInterval);
+      return;
+    }
+    const pick = unhinted[Math.floor(Math.random() * unhinted.length)];
+    state.hintedIds.add(pick.id);
+    d3.select(`[data-country-id="${pick.id}"]`).classed('hint', true);
+    d3.select(`[data-label-id="${pick.id}"]`).classed('visible', true);
+    showHint(`Hint: ${pick.name} has been highlighted on the map.`);
+  }
+
+  function triggerGiveUp() {
+    if (state.isComplete) return;
+    state.gaveUp = true;
+    stopTimer();
+
+    // Reveal all remaining with gave-up style
+    getRemainingCountries().forEach(c => {
+      d3.select(`[data-country-id="${c.id}"]`).classed('gave-up', true).classed('hint', false);
+      d3.select(`[data-label-id="${c.id}"]`).classed('visible', true);
+    });
+    state.remaining.clear();
+    state.isComplete = true;
+
+    setTimeout(() => showCompletionModal(state.elapsedSeconds, false), 400);
   }
 
   // ── 12. Multiple Choice Mode ───────────────────────────────────
@@ -466,9 +516,7 @@
 
   function showCompletionModal(elapsed, isNewPb) {
     if (modalTitle) {
-      modalTitle.textContent = state.found.size === state.mapConfig.countries.length
-        ? 'Complete!'
-        : `${state.found.size}/${state.mapConfig.countries.length} found`;
+      modalTitle.textContent = state.gaveUp ? 'Gave Up' : 'Complete!';
     }
     if (modalTime) modalTime.textContent = formatTime(elapsed);
     if (modalScore) modalScore.textContent = `${state.found.size} / ${state.mapConfig.countries.length}`;
@@ -514,7 +562,8 @@
             mode: mode,
             timeSeconds: elapsed,
             foundCount: state.found.size,
-            totalCount: state.mapConfig.countries.length
+            totalCount: state.mapConfig.countries.length,
+            gaveUp: state.gaveUp
           });
           submitBtn.textContent = 'Submitted ✓';
           // Refresh leaderboard
