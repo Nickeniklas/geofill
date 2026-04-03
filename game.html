@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>geofill</title>
+  <meta name="description" content="Fill the map by typing country names." />
+  <link rel="stylesheet" href="style/main.css" />
+  <link rel="stylesheet" href="style/game.css" />
+  <link rel="icon" href="assets/favicon.ico" />
+</head>
+<body>
+
+<!-- Grain texture overlay -->
+<svg id="grain-overlay" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <filter id="grain-filter">
+    <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
+    <feColorMatrix type="saturate" values="0" />
+  </filter>
+  <rect width="100%" height="100%" filter="url(#grain-filter)" />
+</svg>
+
+<div class="game-wrapper">
+
+  <!-- Top Bar -->
+  <header class="game-topbar">
+    <div class="game-topbar-left">
+      <a class="game-back-link" href="index.html">← Maps</a>
+      <span class="game-map-label" id="game-map-label">Loading…</span>
+      <span class="game-mode-badge" id="game-mode-badge"></span>
+    </div>
+    <div class="game-topbar-right">
+      <span class="pb-indicator" id="pb-indicator" style="display:none"></span>
+      <span class="game-progress">
+        <span class="found-count" id="found-count">0</span>
+        <span style="color:var(--border)"> / </span>
+        <span id="total-count">—</span>
+      </span>
+      <span class="game-timer" id="timer-display">00:00</span>
+    </div>
+  </header>
+
+  <!-- Map -->
+  <div class="game-map-container">
+    <div id="map-loading">Loading map…</div>
+    <div id="map-error">
+      <div class="error-box">
+        <h2>Map Error</h2>
+        <p>Could not load the map data. Please check your connection and try again.</p>
+      </div>
+    </div>
+    <svg id="map-svg" viewBox="0 0 960 600" preserveAspectRatio="xMidYMid meet" aria-label="Interactive map"></svg>
+  </div>
+
+  <!-- Bottom Panel -->
+  <div class="game-bottom">
+
+    <!-- Classic / Timer input -->
+    <div id="input-area">
+      <div class="input-row">
+        <input
+          type="text"
+          id="country-input"
+          placeholder="Type a country name…"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          aria-label="Country name input"
+        />
+      </div>
+      <div id="hint-text" aria-live="polite"></div>
+      <div id="feedback-text" aria-live="polite"></div>
+    </div>
+
+    <!-- Multiple Choice buttons -->
+    <div id="choice-area">
+      <p class="choice-prompt">Which country is highlighted?</p>
+      <div class="choice-buttons">
+        <button class="choice-btn" type="button" aria-label="Choice 1"></button>
+        <button class="choice-btn" type="button" aria-label="Choice 2"></button>
+        <button class="choice-btn" type="button" aria-label="Choice 3"></button>
+        <button class="choice-btn" type="button" aria-label="Choice 4"></button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Completion Modal -->
+<div id="modal-backdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal" id="completion-modal">
+
+    <h2 class="modal-title" id="modal-title">Complete!</h2>
+
+    <div class="modal-stats">
+      <div class="stat-box">
+        <div class="stat-label">Time</div>
+        <div class="stat-value highlight" id="modal-time">00:00</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Score</div>
+        <div class="stat-value" id="modal-score">—</div>
+      </div>
+    </div>
+
+    <div class="modal-pb-badge" id="modal-pb-badge" style="display:none">★ New Personal Best!</div>
+
+    <!-- Submit to leaderboard -->
+    <div class="modal-submit-row">
+      <input
+        type="text"
+        id="player-name-input"
+        placeholder="Your name…"
+        maxlength="24"
+        autocomplete="nickname"
+        spellcheck="false"
+      />
+      <button class="btn" id="submit-score-btn" type="button">Submit to Leaderboard</button>
+    </div>
+    <div class="modal-error" id="submit-error"></div>
+
+    <!-- Action buttons -->
+    <div class="modal-actions">
+      <button class="btn" id="play-again-btn" type="button">Play Again</button>
+      <button class="btn btn-muted" id="change-map-btn" type="button">Change Map</button>
+    </div>
+
+    <!-- Leaderboard -->
+    <div class="modal-leaderboard">
+      <h3>Top Scores</h3>
+      <div id="modal-leaderboard-container"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Scripts — order matters: D3, topojson, Supabase, then our modules -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
+<script src="js/fuzzy.js"></script>
+<script src="js/leaderboard.js"></script>
+<script src="js/game.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>geofill — fill the map</title>
+  <meta name="description" content="Fill the map by typing country and state names. A geography challenge game." />
+  <link rel="stylesheet" href="style/main.css" />
+  <link rel="icon" href="assets/favicon.ico" />
+</head>
+<body>
+
+<!-- Grain texture overlay -->
+<svg id="grain-overlay" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <filter id="grain-filter">
+    <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
+    <feColorMatrix type="saturate" values="0" />
+  </filter>
+  <rect width="100%" height="100%" filter="url(#grain-filter)" />
+</svg>
+
+<div class="home-wrapper">
+
+  <!-- Header -->
+  <header class="home-header">
+    <h1 class="home-title">geofill</h1>
+    <p class="home-subtitle">fill the map &nbsp;·&nbsp; beat the clock</p>
+  </header>
+
+  <!-- Map Cards -->
+  <main class="map-grid">
+
+    <!-- Europe -->
+    <div class="map-card">
+      <div class="map-card-preview">
+        <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- Simplified Europe outline as a decorative shape -->
+          <rect width="200" height="140" fill="var(--surface2)" />
+          <text x="100" y="78" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-size="20" fill="#3d3428">Europe</text>
+          <!-- Rough outline dots for decoration -->
+          <circle cx="90"  cy="45"  r="2" fill="#3d3428" />
+          <circle cx="110" cy="40"  r="2" fill="#3d3428" />
+          <circle cx="130" cy="50"  r="2" fill="#3d3428" />
+          <circle cx="145" cy="65"  r="2" fill="#3d3428" />
+          <circle cx="140" cy="85"  r="2" fill="#3d3428" />
+          <circle cx="125" cy="100" r="2" fill="#3d3428" />
+          <circle cx="100" cy="105" r="2" fill="#3d3428" />
+          <circle cx="75"  cy="95"  r="2" fill="#3d3428" />
+          <circle cx="60"  cy="75"  r="2" fill="#3d3428" />
+          <circle cx="65"  cy="55"  r="2" fill="#3d3428" />
+          <circle cx="80"  cy="45"  r="2" fill="#3d3428" />
+        </svg>
+      </div>
+      <div class="map-card-info">
+        <h2>Europe</h2>
+        <p>44 sovereign countries</p>
+      </div>
+      <div class="map-card-modes">
+        <a class="mode-btn" href="game.html?map=europe&mode=classic">
+          <span class="mode-btn-name">Classic</span>
+          <span class="mode-btn-desc">Type to fill</span>
+        </a>
+        <a class="mode-btn" href="game.html?map=europe&mode=timer">
+          <span class="mode-btn-name">Timer Challenge</span>
+          <span class="mode-btn-desc">Beat your best</span>
+        </a>
+        <a class="mode-btn" href="game.html?map=europe&mode=choice">
+          <span class="mode-btn-name">Multiple Choice</span>
+          <span class="mode-btn-desc">Click to guess</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- USA -->
+    <div class="map-card">
+      <div class="map-card-preview">
+        <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="200" height="140" fill="var(--surface2)" />
+          <text x="100" y="78" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-size="20" fill="#3d3428">USA</text>
+          <!-- Rough outline dots for decoration -->
+          <circle cx="35"  cy="45"  r="2" fill="#3d3428" />
+          <circle cx="60"  cy="38"  r="2" fill="#3d3428" />
+          <circle cx="90"  cy="35"  r="2" fill="#3d3428" />
+          <circle cx="120" cy="38"  r="2" fill="#3d3428" />
+          <circle cx="150" cy="45"  r="2" fill="#3d3428" />
+          <circle cx="165" cy="65"  r="2" fill="#3d3428" />
+          <circle cx="160" cy="90"  r="2" fill="#3d3428" />
+          <circle cx="140" cy="105" r="2" fill="#3d3428" />
+          <circle cx="100" cy="108" r="2" fill="#3d3428" />
+          <circle cx="60"  cy="100" r="2" fill="#3d3428" />
+          <circle cx="35"  cy="80"  r="2" fill="#3d3428" />
+        </svg>
+      </div>
+      <div class="map-card-info">
+        <h2>United States</h2>
+        <p>50 states</p>
+      </div>
+      <div class="map-card-modes">
+        <a class="mode-btn" href="game.html?map=usa&mode=classic">
+          <span class="mode-btn-name">Classic</span>
+          <span class="mode-btn-desc">Type to fill</span>
+        </a>
+        <a class="mode-btn" href="game.html?map=usa&mode=timer">
+          <span class="mode-btn-name">Timer Challenge</span>
+          <span class="mode-btn-desc">Beat your best</span>
+        </a>
+        <a class="mode-btn" href="game.html?map=usa&mode=choice">
+          <span class="mode-btn-name">Multiple Choice</span>
+          <span class="mode-btn-desc">Click to guess</span>
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="home-footer">
+    geofill &nbsp;·&nbsp; a geography challenge &nbsp;·&nbsp;
+    <a href="https://github.com/Nickeniklas/geofill" target="_blank" rel="noopener">GitHub</a>
+  </footer>
+
+</div>
+
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/leaderboard.js"></script>
+</body>
+</html>
