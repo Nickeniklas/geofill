@@ -1,0 +1,294 @@
+{
+  "id": "europe",
+  "label": "Europe",
+  "description": "44 sovereign countries of Europe",
+  "topoJsonUrl": "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
+  "topoJsonObjectKey": "countries",
+  "viewBox": "0 0 960 600",
+  "projectionConfig": {
+    "type": "mercator",
+    "center": [15, 54],
+    "scale": 500
+  },
+  "countries": [
+    {
+      "id": "albania",
+      "name": "Albania",
+      "isoNumeric": "008",
+      "aliases": ["al", "shqiperia", "shqipëria"]
+    },
+    {
+      "id": "andorra",
+      "name": "Andorra",
+      "isoNumeric": "020",
+      "isMarker": true,
+      "lat": 42.5063,
+      "lng": 1.5218,
+      "aliases": ["ad", "principat dandorra"]
+    },
+    {
+      "id": "austria",
+      "name": "Austria",
+      "isoNumeric": "040",
+      "aliases": ["at", "osterreich", "österreich", "oesterreich"]
+    },
+    {
+      "id": "belarus",
+      "name": "Belarus",
+      "isoNumeric": "112",
+      "aliases": ["by", "byelorussia", "belorussia", "white russia"]
+    },
+    {
+      "id": "belgium",
+      "name": "Belgium",
+      "isoNumeric": "056",
+      "aliases": ["be", "belgie", "belgique", "belgien"]
+    },
+    {
+      "id": "bosnia",
+      "name": "Bosnia and Herzegovina",
+      "isoNumeric": "070",
+      "aliases": ["bosnia", "bih", "bosnia herzegovina", "bosna i hercegovina"]
+    },
+    {
+      "id": "bulgaria",
+      "name": "Bulgaria",
+      "isoNumeric": "100",
+      "aliases": ["bg", "balgariya"]
+    },
+    {
+      "id": "croatia",
+      "name": "Croatia",
+      "isoNumeric": "191",
+      "aliases": ["hr", "hrvatska"]
+    },
+    {
+      "id": "cyprus",
+      "name": "Cyprus",
+      "isoNumeric": "196",
+      "aliases": ["cy", "kypros", "kibris"]
+    },
+    {
+      "id": "czechia",
+      "name": "Czechia",
+      "isoNumeric": "203",
+      "aliases": ["czech republic", "cesko", "česká republika", "cz", "ceska republika"]
+    },
+    {
+      "id": "denmark",
+      "name": "Denmark",
+      "isoNumeric": "208",
+      "aliases": ["dk", "danmark"]
+    },
+    {
+      "id": "estonia",
+      "name": "Estonia",
+      "isoNumeric": "233",
+      "aliases": ["ee", "eesti"]
+    },
+    {
+      "id": "finland",
+      "name": "Finland",
+      "isoNumeric": "246",
+      "aliases": ["fi", "suomi"]
+    },
+    {
+      "id": "france",
+      "name": "France",
+      "isoNumeric": "250",
+      "aliases": ["fr", "republique francaise", "french republic"]
+    },
+    {
+      "id": "germany",
+      "name": "Germany",
+      "isoNumeric": "276",
+      "aliases": ["de", "deutschland", "bundesrepublik deutschland"]
+    },
+    {
+      "id": "greece",
+      "name": "Greece",
+      "isoNumeric": "300",
+      "aliases": ["gr", "hellas", "ellada", "ellás"]
+    },
+    {
+      "id": "hungary",
+      "name": "Hungary",
+      "isoNumeric": "348",
+      "aliases": ["hu", "magyarorszag", "magyarország"]
+    },
+    {
+      "id": "iceland",
+      "name": "Iceland",
+      "isoNumeric": "352",
+      "aliases": ["is", "island"]
+    },
+    {
+      "id": "ireland",
+      "name": "Ireland",
+      "isoNumeric": "372",
+      "aliases": ["ie", "eire", "éire", "republic of ireland"]
+    },
+    {
+      "id": "italy",
+      "name": "Italy",
+      "isoNumeric": "380",
+      "aliases": ["it", "italia", "italian republic"]
+    },
+    {
+      "id": "kosovo",
+      "name": "Kosovo",
+      "isoNumeric": "383",
+      "isMarker": true,
+      "lat": 42.6026,
+      "lng": 20.9030,
+      "aliases": ["xk", "kosova", "republika e kosoves"]
+    },
+    {
+      "id": "latvia",
+      "name": "Latvia",
+      "isoNumeric": "428",
+      "aliases": ["lv", "latvija"]
+    },
+    {
+      "id": "liechtenstein",
+      "name": "Liechtenstein",
+      "isoNumeric": "438",
+      "isMarker": true,
+      "lat": 47.1660,
+      "lng": 9.5554,
+      "aliases": ["li", "furstentum liechtenstein"]
+    },
+    {
+      "id": "lithuania",
+      "name": "Lithuania",
+      "isoNumeric": "440",
+      "aliases": ["lt", "lietuva"]
+    },
+    {
+      "id": "luxembourg",
+      "name": "Luxembourg",
+      "isoNumeric": "442",
+      "aliases": ["lu", "luxemburg", "letzebuerg", "grand duchy of luxembourg"]
+    },
+    {
+      "id": "malta",
+      "name": "Malta",
+      "isoNumeric": "470",
+      "aliases": ["mt", "republic of malta"]
+    },
+    {
+      "id": "moldova",
+      "name": "Moldova",
+      "isoNumeric": "498",
+      "aliases": ["md", "republic of moldova", "moldavia"]
+    },
+    {
+      "id": "monaco",
+      "name": "Monaco",
+      "isoNumeric": "492",
+      "isMarker": true,
+      "lat": 43.7384,
+      "lng": 7.4246,
+      "aliases": ["mc", "principauté de monaco"]
+    },
+    {
+      "id": "montenegro",
+      "name": "Montenegro",
+      "isoNumeric": "499",
+      "aliases": ["me", "crna gora"]
+    },
+    {
+      "id": "netherlands",
+      "name": "Netherlands",
+      "isoNumeric": "528",
+      "aliases": ["nl", "holland", "nederland", "the netherlands"]
+    },
+    {
+      "id": "north-macedonia",
+      "name": "North Macedonia",
+      "isoNumeric": "807",
+      "aliases": ["mk", "macedonia", "severna makedonija", "fyrom", "republic of north macedonia"]
+    },
+    {
+      "id": "norway",
+      "name": "Norway",
+      "isoNumeric": "578",
+      "aliases": ["no", "norge", "noreg"]
+    },
+    {
+      "id": "poland",
+      "name": "Poland",
+      "isoNumeric": "616",
+      "aliases": ["pl", "polska", "rzeczpospolita polska"]
+    },
+    {
+      "id": "portugal",
+      "name": "Portugal",
+      "isoNumeric": "620",
+      "aliases": ["pt", "portuguese republic", "republica portuguesa"]
+    },
+    {
+      "id": "romania",
+      "name": "Romania",
+      "isoNumeric": "642",
+      "aliases": ["ro", "românia"]
+    },
+    {
+      "id": "san-marino",
+      "name": "San Marino",
+      "isoNumeric": "674",
+      "isMarker": true,
+      "lat": 43.9424,
+      "lng": 12.4578,
+      "aliases": ["sm", "republic of san marino"]
+    },
+    {
+      "id": "serbia",
+      "name": "Serbia",
+      "isoNumeric": "688",
+      "aliases": ["rs", "srbija"]
+    },
+    {
+      "id": "slovakia",
+      "name": "Slovakia",
+      "isoNumeric": "703",
+      "aliases": ["sk", "slovensko", "slovak republic"]
+    },
+    {
+      "id": "slovenia",
+      "name": "Slovenia",
+      "isoNumeric": "705",
+      "aliases": ["si", "slovenija"]
+    },
+    {
+      "id": "spain",
+      "name": "Spain",
+      "isoNumeric": "724",
+      "aliases": ["es", "espana", "españa", "reino de espana", "kingdom of spain"]
+    },
+    {
+      "id": "sweden",
+      "name": "Sweden",
+      "isoNumeric": "752",
+      "aliases": ["se", "sverige", "konungariket sverige"]
+    },
+    {
+      "id": "switzerland",
+      "name": "Switzerland",
+      "isoNumeric": "756",
+      "aliases": ["ch", "schweiz", "suisse", "svizzera", "svizra", "helvetia"]
+    },
+    {
+      "id": "ukraine",
+      "name": "Ukraine",
+      "isoNumeric": "804",
+      "aliases": ["ua", "ukraina", "ukrayina"]
+    },
+    {
+      "id": "united-kingdom",
+      "name": "United Kingdom",
+      "isoNumeric": "826",
+      "aliases": ["uk", "britain", "great britain", "england", "gb", "britain"]
+    }
+  ]
+}
