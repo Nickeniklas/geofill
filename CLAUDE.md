@@ -5,7 +5,7 @@
 Static browser geography game hosted on GitHub Pages.
 No build step, no npm, no framework. Pure HTML + CSS + JS.
 
-Player fills a map by typing country/state names (or clicking in Multiple Choice mode).
+Player fills a map by typing region names (or clicking in Multiple Choice mode).
 Two game modes: Classic and Multiple Choice. Leaderboard stored in Supabase.
 
 ---
@@ -13,16 +13,17 @@ Two game modes: Classic and Multiple Choice. Leaderboard stored in Supabase.
 ## Architecture
 
 ```
-index.html          Home screen — map picker
-game.html           Game screen — map + input + leaderboard modal
-config.js           Supabase URL + anon key (safe to commit, anon key is public)
-style/main.css      Shared theme, custom properties, home screen styles
-style/game.css      Game-specific styles, SVG rules, animations, modal
-js/game.js          Core engine: D3 map rendering, both game modes, completion flow
-js/leaderboard.js   Supabase read/write, table renderer
-js/fuzzy.js         Levenshtein distance, normalize(), findNearMiss(), findExactMatch()
-maps/europe.json    44 European countries (39 polygons + 5 point markers)
-maps/usa.json       50 US states
+index.html               Home screen — map picker
+game.html                Game screen — map + input + leaderboard modal
+config.js                Supabase URL + anon key (safe to commit, anon key is public)
+style/main.css           Shared theme, custom properties, home screen styles
+style/game.css           Game-specific styles, SVG rules, animations, modal
+js/game.js               Core engine: D3 map rendering, both game modes, completion flow
+js/leaderboard.js        Supabase read/write, table renderer
+js/fuzzy.js              Levenshtein distance, normalize(), findNearMiss(), findExactMatch()
+maps/europe.json         44 European countries (39 polygons + 5 point markers)
+maps/europe-capitals.json  44 European capital cities (same shapes as europe.json)
+maps/usa.json            50 US states
 assets/favicon.ico
 ```
 
@@ -33,6 +34,7 @@ assets/favicon.ico
 - CDN script load order: D3 → topojson-client → supabase-js → config.js → fuzzy.js → leaderboard.js → game.js
 - `game.js` reads `window.d3`, `window.topojson`, `window.supabase` (UMD globals from CDNs)
 - `config.js` sets `window.GEOFILL_CONFIG = { supabaseUrl, supabaseKey }` — never hardcode credentials elsewhere
+- No localStorage usage anywhere — personal best tracking was removed
 
 ## CDN versions pinned
 
@@ -48,7 +50,7 @@ assets/favicon.ico
 
 | Map | URL | Object key | Feature ID format |
 |-----|-----|-----------|-------------------|
-| Europe | `https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json` | `countries` | 3-digit zero-padded ISO numeric string, e.g. `"008"` |
+| Europe / European Capitals | `https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json` | `countries` | 3-digit zero-padded ISO numeric string, e.g. `"008"` |
 | USA | `https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json` | `states` | 2-digit zero-padded FIPS string, e.g. `"01"` |
 
 **Critical:** The `isoNumeric` / `fips` fields in map JSON must exactly match the feature IDs —
@@ -79,11 +81,16 @@ they are strings, zero-padded. `"008"` ≠ `"8"`. `"01"` ≠ `"1"`.
 ```
 
 - `id` — unique lowercase slug, used as `data-country-id` on SVG elements
-- `isoNumeric` — for Europe (must match world-atlas feature.id exactly)
+- `name` — the answer players must type; also the label shown on the map when found
+- `isoNumeric` — for Europe/Capitals (must match world-atlas feature.id exactly)
 - `fips` — for USA (must match us-atlas feature.id exactly)
+- `aliases` — alternate spellings/names accepted as correct (normalized, case-insensitive)
 - `isMarker: true` + `lat`/`lng` — renders as a `<circle>` instead of a `<path>` (for microstates)
 
 For USA, replace `isoNumeric` with `fips`.
+
+The `name` field is completely generic — `europe-capitals.json` uses capital city names as `name`
+while sharing the same `isoNumeric` values and TopoJSON source as `europe.json`.
 
 ### Projection types
 
@@ -94,11 +101,11 @@ For USA, replace `isoNumeric` with `fips`.
 
 ## Microstates / missing features
 
-Five entries in `europe.json` are rendered as point markers (`isMarker: true`) because
-they have no visible polygon in the 110m resolution dataset:
+Five entries in `europe.json` (and `europe-capitals.json`) are rendered as point markers
+(`isMarker: true`) because they have no visible polygon in the 110m resolution dataset:
 Andorra, Kosovo, Liechtenstein, Monaco, San Marino.
 
-If a country has `isMarker: true`, the engine renders a `<circle r="5">` projected
+If a region has `isMarker: true`, the engine renders a `<circle r="5">` projected
 from `[lng, lat]` rather than a `<path>`.
 
 ---
@@ -113,6 +120,9 @@ from `[lng, lat]` rather than a `<path>`.
 6. Choose a projection: `mercator` (with `center` + `scale`) or another D3 projection name
    — to support a new projection type, add a case to `makeProjection()` in `js/game.js`
 7. Add a map card to `index.html` with links to `game.html?map=yourmap&mode=classic` etc.
+
+**Tip:** A map can reuse an existing TopoJSON source with different `name` values — see
+`europe-capitals.json` which uses the same shapes as `europe.json` but answers are capital cities.
 
 ---
 
@@ -129,6 +139,7 @@ create table scores (
   time_seconds integer not null,
   found_count integer not null,
   total_count integer not null,
+  gave_up boolean default false,
   created_at timestamp with time zone default now()
 );
 
@@ -140,6 +151,16 @@ create policy "Anyone can read scores"
 create policy "Anyone can insert scores"
   on scores for insert with check (true);
 ```
+
+If upgrading an existing table, run:
+```sql
+alter table scores add column if not exists gave_up boolean default false;
+```
+
+### Leaderboard ordering
+
+Scores are ranked by `found_count DESC, time_seconds ASC` — so full completions always rank
+above gave-up partial runs. Gave-up entries show a ✗ badge in the player name column.
 
 ### Credentials
 
@@ -172,9 +193,55 @@ Must use HTTP — not `file://` — because the game fetches JSON files and CDN 
 | mode param | Name | Behaviour |
 |-----------|------|-----------|
 | `classic` | Classic | Free typing, timer counts up from first keystroke |
-| `choice` | Multiple Choice | Map highlights a random region, 4 buttons appear |
+| `choice` | Multiple Choice | Map highlights a random region in amber, 4 buttons appear |
 
 URL format: `game.html?map=europe&mode=classic`
+
+---
+
+## Give Up
+
+A "Give Up" button is always visible in the bottom panel during gameplay.
+
+- Stops the timer and reveals all unfound regions with a gray fill (`#b0bec5`) and name labels
+- Opens the completion modal titled "Gave Up" (no personal best logic)
+- Score is still submitted to the same leaderboard, marked with `gave_up: true`
+- Personal best is **never** updated on a gave-up run
+
+---
+
+## Auto-hints (Classic mode only)
+
+After 10 minutes of play, one random unfound region is highlighted (amber glow via `.hint` class)
+and its name label appears on the map. Another hint fires every 2 minutes after that.
+
+- The player **must still type the name** to get credit — hints don't auto-fill
+- Fully leaderboard-fair since the player does the typing
+- Hints clear naturally when the player finds the hinted region
+
+---
+
+## Input feedback
+
+| Situation | Flash colour | Feedback text |
+|-----------|-------------|---------------|
+| Correct answer | Green border | ✓ Name |
+| Wrong / unknown | Red border | — |
+| Already found | Amber border | "Already found Name" |
+| Near miss (Enter) | Red border | "Did you mean Name?" |
+
+Fuzzy near-miss only triggers on Enter, max Levenshtein distance 2.
+
+---
+
+## Visual colour reference
+
+| Element | CSS class | Fill |
+|---------|-----------|------|
+| Unfound region | `.country` | `#c8d4e0` (blue-gray) |
+| Found region | `.country.found` | `#d4614a` (coral) |
+| Highlighted (choice/hint) | `.country.hint` | `#f0b429` (amber) |
+| Gave-up revealed | `.country.gave-up` | `#b0bec5` (muted gray) |
 
 ---
 
@@ -184,5 +251,6 @@ URL format: `game.html?map=europe&mode=classic`
 - Asia
 - Nordics / Scandinavia
 - South America
+- US Capitals
 
 Add by following the "How to add a new map" steps above.
