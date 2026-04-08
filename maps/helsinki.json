@@ -1,0 +1,296 @@
+{
+  "id": "helsinki",
+  "label": "Helsingin kaupunginosat",
+  "description": "Helsingin 34 peruspiiriä",
+  "topoJsonUrl": "maps/helsinki-topo.json",
+  "topoJsonObjectKey": "districts",
+  "featureIdField": "tunnus",
+  "viewBox": "0 0 960 600",
+  "projectionConfig": {
+    "type": "mercator",
+    "center": [
+      25.02,
+      60.22
+    ],
+    "scale": 80000
+  },
+  "countries": [
+    {
+      "id": "vironniemi",
+      "name": "Vironniemi",
+      "tunnus": 101,
+      "aliases": []
+    },
+    {
+      "id": "ullanlinna",
+      "name": "Ullanlinna",
+      "tunnus": 102,
+      "aliases": []
+    },
+    {
+      "id": "kampinmalmi",
+      "name": "Kampinmalmi",
+      "tunnus": 103,
+      "aliases": [
+        "kamppi",
+        "kamppi-malmi"
+      ]
+    },
+    {
+      "id": "taka-toolo",
+      "name": "Taka-Töölö",
+      "tunnus": 104,
+      "aliases": [
+        "takatöölö",
+        "takatoolo"
+      ]
+    },
+    {
+      "id": "lauttasaari",
+      "name": "Lauttasaari",
+      "tunnus": 105,
+      "aliases": [
+        "drumsö",
+        "drumso"
+      ]
+    },
+    {
+      "id": "reijola",
+      "name": "Reijola",
+      "tunnus": 201,
+      "aliases": [
+        "munkkivuori"
+      ]
+    },
+    {
+      "id": "munkkiniemi",
+      "name": "Munkkiniemi",
+      "tunnus": 202,
+      "aliases": [
+        "munksnäs"
+      ]
+    },
+    {
+      "id": "haaga",
+      "name": "Haaga",
+      "tunnus": 203,
+      "aliases": []
+    },
+    {
+      "id": "pitajanmaki",
+      "name": "Pitäjänmäki",
+      "tunnus": 204,
+      "aliases": [
+        "pitäjänmäki"
+      ]
+    },
+    {
+      "id": "kaarela",
+      "name": "Kaarela",
+      "tunnus": 205,
+      "aliases": [
+        "kannelmäki",
+        "kannelmaki"
+      ]
+    },
+    {
+      "id": "kallio",
+      "name": "Kallio",
+      "tunnus": 301,
+      "aliases": []
+    },
+    {
+      "id": "alppiharju",
+      "name": "Alppiharju",
+      "tunnus": 302,
+      "aliases": [
+        "alppila"
+      ]
+    },
+    {
+      "id": "vallila",
+      "name": "Vallila",
+      "tunnus": 303,
+      "aliases": [
+        "vallgård",
+        "vallgard"
+      ]
+    },
+    {
+      "id": "pasila",
+      "name": "Pasila",
+      "tunnus": 304,
+      "aliases": [
+        "böle",
+        "bole"
+      ]
+    },
+    {
+      "id": "vanhakaupunki",
+      "name": "Vanhakaupunki",
+      "tunnus": 305,
+      "aliases": [
+        "gammelstaden",
+        "arabianranta"
+      ]
+    },
+    {
+      "id": "maunula",
+      "name": "Maunula",
+      "tunnus": 401,
+      "aliases": []
+    },
+    {
+      "id": "lansi-pakila",
+      "name": "Länsi-Pakila",
+      "tunnus": 402,
+      "aliases": [
+        "lansi-pakila",
+        "pakila"
+      ]
+    },
+    {
+      "id": "tuomarinkyla",
+      "name": "Tuomarinkylä",
+      "tunnus": 403,
+      "aliases": [
+        "tuomarinkyla",
+        "hallainvuori"
+      ]
+    },
+    {
+      "id": "oulunkyla",
+      "name": "Oulunkylä",
+      "tunnus": 404,
+      "aliases": [
+        "oulunkyla",
+        "åggelby",
+        "aggelby"
+      ]
+    },
+    {
+      "id": "ita-pakila",
+      "name": "Itä-Pakila",
+      "tunnus": 405,
+      "aliases": [
+        "ita-pakila",
+        "pakila"
+      ]
+    },
+    {
+      "id": "latokartano",
+      "name": "Latokartano",
+      "tunnus": 501,
+      "aliases": [
+        "viikki"
+      ]
+    },
+    {
+      "id": "pukinmaki",
+      "name": "Pukinmäki",
+      "tunnus": 502,
+      "aliases": [
+        "pukinmaki",
+        "bocksbacka"
+      ]
+    },
+    {
+      "id": "malmi",
+      "name": "Malmi",
+      "tunnus": 503,
+      "aliases": [
+        "malm"
+      ]
+    },
+    {
+      "id": "suutarila",
+      "name": "Suutarila",
+      "tunnus": 504,
+      "aliases": []
+    },
+    {
+      "id": "puistola",
+      "name": "Puistola",
+      "tunnus": 505,
+      "aliases": [
+        "parkstad"
+      ]
+    },
+    {
+      "id": "jakomaki",
+      "name": "Jakomäki",
+      "tunnus": 506,
+      "aliases": []
+    },
+    {
+      "id": "kulosaari",
+      "name": "Kulosaari",
+      "tunnus": 601,
+      "aliases": [
+        "brändö",
+        "brando"
+      ]
+    },
+    {
+      "id": "herttoniemi",
+      "name": "Herttoniemi",
+      "tunnus": 602,
+      "aliases": [
+        "hertonäs",
+        "hertonas"
+      ]
+    },
+    {
+      "id": "laajasalo",
+      "name": "Laajasalo",
+      "tunnus": 603,
+      "aliases": [
+        "degerö",
+        "degero"
+      ]
+    },
+    {
+      "id": "vartiokyla",
+      "name": "Vartiokylä",
+      "tunnus": 701,
+      "aliases": [
+        "vartiokyla",
+        "botby"
+      ]
+    },
+    {
+      "id": "myllypuro",
+      "name": "Myllypuro",
+      "tunnus": 702,
+      "aliases": [
+        "kvarnbäcken",
+        "kvarnbacken"
+      ]
+    },
+    {
+      "id": "mellunkyla",
+      "name": "Mellunkylä",
+      "tunnus": 703,
+      "aliases": [
+        "mellungsbacka"
+      ]
+    },
+    {
+      "id": "vuosaari",
+      "name": "Vuosaari",
+      "tunnus": 704,
+      "aliases": [
+        "nordsjö",
+        "nordso"
+      ]
+    },
+    {
+      "id": "ostersundom",
+      "name": "Östersundom",
+      "tunnus": 801,
+      "aliases": [
+        "ostersundom"
+      ]
+    }
+  ]
+}

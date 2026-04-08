@@ -140,8 +140,8 @@
   const allFeatures = topojson.feature(topoData, topoData.objects[objKey]).features;
 
   // Build lookup: featureId → country config
-  // Europe uses isoNumeric, USA uses fips — both stored as strings matching feature.id
-  const featureIdField = mapConfig.id === 'usa' ? 'fips' : 'isoNumeric';
+  // Europe uses isoNumeric, USA uses fips, Helsinki uses tunnus — configurable via featureIdField
+  const featureIdField = mapConfig.featureIdField || (mapConfig.id === 'usa' ? 'fips' : 'isoNumeric');
   const countryByFeatureId = new Map();
   mapConfig.countries.forEach(c => {
     if (!c.isMarker && c[featureIdField]) {
