@@ -10,9 +10,9 @@
     "type": "mercator",
     "center": [
       25.02,
-      60.22
+      60.11
     ],
-    "scale": 80000
+    "scale": 45000
   },
   "countries": [
     {
