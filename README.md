@@ -34,18 +34,26 @@ python -m http.server 8080
 
 See `CLAUDE.md` for step-by-step instructions.
 
+## Maps
+
+| Map | Regions | Notes |
+|-----|---------|-------|
+| Europe | 44 countries | 5 microstates rendered as point markers |
+| European Capitals | 44 capitals | Same shapes as Europe |
+| United States | 50 states | AlbersUSA projection |
+| Helsingin kaupunginosat | 34 peruspiiriä | Self-hosted TopoJSON from Helsinki City WFS (CC BY 4.0) |
+
 ## Game modes
 
 | Mode | Description |
 |------|-------------|
-| Classic | Type country names, timer counts up |
-| Timer Challenge | Same as Classic + personal best tracking |
+| Classic | Type names, timer counts up |
 | Multiple Choice | Click the correct name from 4 options |
 
 ## URL format
 
 ```
 game.html?map=europe&mode=classic
-game.html?map=usa&mode=timer
-game.html?map=europe&mode=choice
+game.html?map=usa&mode=choice
+game.html?map=helsinki&mode=classic
 ```

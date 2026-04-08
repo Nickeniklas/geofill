@@ -24,6 +24,8 @@ js/fuzzy.js              Levenshtein distance, normalize(), findNearMiss(), find
 maps/europe.json         44 European countries (39 polygons + 5 point markers)
 maps/europe-capitals.json  44 European capital cities (same shapes as europe.json)
 maps/usa.json            50 US states
+maps/helsinki.json       34 Helsinki peruspiirit (basic districts)
+maps/helsinki-topo.json  Self-hosted TopoJSON for Helsinki (generated from WFS, see below)
 assets/favicon.ico
 ```
 
@@ -52,8 +54,13 @@ assets/favicon.ico
 |-----|-----|-----------|-------------------|
 | Europe / European Capitals | `https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json` | `countries` | 3-digit zero-padded ISO numeric string, e.g. `"008"` |
 | USA | `https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json` | `states` | 2-digit zero-padded FIPS string, e.g. `"01"` |
+| Helsinki | `maps/helsinki-topo.json` (self-hosted) | `districts` | Numeric string matching `tunnus`, e.g. `"101"` |
 
-**Critical:** The `isoNumeric` / `fips` fields in map JSON must exactly match the feature IDs —
+**Helsinki TopoJSON source:** Generated from Helsinki City WFS service:
+`https://kartta.hel.fi/ws/geoserver/avoindata/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=avoindata:Piirijako_peruspiiri&outputFormat=application/json&srsName=EPSG:4326`
+Layer: `avoindata:Piirijako_peruspiiri`. License: CC BY 4.0 (Helsinki/Kami).
+
+**Critical:** The `isoNumeric` / `fips` / `tunnus` fields in map JSON must exactly match the feature IDs —
 they are strings, zero-padded. `"008"` ≠ `"8"`. `"01"` ≠ `"1"`.
 
 ---
@@ -67,6 +74,7 @@ they are strings, zero-padded. `"008"` ≠ `"8"`. `"01"` ≠ `"1"`.
   "description": "44 sovereign countries of Europe",
   "topoJsonUrl": "...",
   "topoJsonObjectKey": "countries",
+  "featureIdField": "isoNumeric",
   "viewBox": "0 0 960 600",
   "projectionConfig": {
     "type": "mercator",
@@ -82,8 +90,10 @@ they are strings, zero-padded. `"008"` ≠ `"8"`. `"01"` ≠ `"1"`.
 
 - `id` — unique lowercase slug, used as `data-country-id` on SVG elements
 - `name` — the answer players must type; also the label shown on the map when found
+- `featureIdField` — which property on each country entry holds the TopoJSON feature ID. Defaults to `isoNumeric` (or `fips` for `map.id === 'usa'`). Helsinki uses `tunnus`.
 - `isoNumeric` — for Europe/Capitals (must match world-atlas feature.id exactly)
 - `fips` — for USA (must match us-atlas feature.id exactly)
+- `tunnus` — for Helsinki (numeric district code, stored as integer, matched via `String()` cast)
 - `aliases` — alternate spellings/names accepted as correct (normalized, case-insensitive)
 - `isMarker: true` + `lat`/`lng` — renders as a `<circle>` instead of a `<path>` (for microstates)
 
