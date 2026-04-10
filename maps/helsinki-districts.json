@@ -3,6 +3,7 @@
   "label": "Helsinki Districts",
   "description": "34 districts of Helsinki (peruspiirit)",
   "geoJsonUrl": "assets/helsinki-districts.geojson",
+  "flipCoordinates": true,
   "featureIdField": "featureId",
   "viewBox": "0 0 960 600",
   "countries": [
