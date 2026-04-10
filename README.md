@@ -41,7 +41,6 @@ See `CLAUDE.md` for step-by-step instructions.
 | Europe | 44 countries | 5 microstates rendered as point markers |
 | European Capitals | 44 capitals | Same shapes as Europe |
 | United States | 50 states | AlbersUSA projection |
-| Helsingin kaupunginosat | 34 peruspiiriä | Self-hosted TopoJSON from Helsinki City WFS (CC BY 4.0) |
 
 ## Game modes
 
@@ -55,5 +54,4 @@ See `CLAUDE.md` for step-by-step instructions.
 ```
 game.html?map=europe&mode=classic
 game.html?map=usa&mode=choice
-game.html?map=helsinki&mode=classic
 ```

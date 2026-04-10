@@ -113,9 +113,10 @@
   const svg = d3.select(svgEl);
   const g = svg.append('g').attr('class', 'map-group');
 
-  // Projection
-  const proj = makeProjection(mapConfig.projectionConfig, svgEl.clientWidth, svgEl.clientHeight);
-  const pathGen = d3.geoPath().projection(proj);
+  // ViewBox dimensions — used for projection so paths are in SVG coordinate space.
+  const vb = svgEl.viewBox.baseVal;
+  const vbW = vb.width  || 960;
+  const vbH = vb.height || 600;
 
   // Zoom + Pan
   const zoom = d3.zoom()
@@ -126,21 +127,31 @@
   svg.on('dblclick.zoom', null);
   svg.on('dblclick', () => svg.transition().duration(400).call(zoom.transform, d3.zoomIdentity));
 
-  // Fetch TopoJSON
-  let topoData;
+  // Load geometry — TopoJSON (Europe, USA) or GeoJSON
+  let allFeatures;
+  let geoDataFc = null; // full FeatureCollection retained for fitSize (GeoJSON maps only)
   try {
-    topoData = await d3.json(mapConfig.topoJsonUrl);
+    if (mapConfig.geoJsonUrl) {
+      geoDataFc = await d3.json(mapConfig.geoJsonUrl);
+      allFeatures = geoDataFc.features;
+    } else {
+      const topoData = await d3.json(mapConfig.topoJsonUrl);
+      const objKey = mapConfig.topoJsonObjectKey;
+      allFeatures = topojson.feature(topoData, topoData.objects[objKey]).features;
+    }
   } catch (e) {
     showError(`Could not load map data: ${e.message}`);
     return;
   }
 
-  // Extract and filter features
-  const objKey = mapConfig.topoJsonObjectKey;
-  const allFeatures = topojson.feature(topoData, topoData.objects[objKey]).features;
+  // Projection — GeoJSON maps use fitSize so no center/scale tuning is needed.
+  // TopoJSON maps use the config-driven makeProjection.
+  const proj = geoDataFc
+    ? d3.geoMercator().fitSize([vbW, vbH], geoDataFc)
+    : makeProjection(mapConfig.projectionConfig, vbW, vbH);
+  const pathGen = d3.geoPath().projection(proj);
 
-  // Build lookup: featureId → country config
-  // Europe uses isoNumeric, USA uses fips, Helsinki uses tunnus — configurable via featureIdField
+  // Build lookup: featureId → country config (configurable via featureIdField)
   const featureIdField = mapConfig.featureIdField || (mapConfig.id === 'usa' ? 'fips' : 'isoNumeric');
   const countryByFeatureId = new Map();
   mapConfig.countries.forEach(c => {
@@ -154,11 +165,20 @@
     return countryByFeatureId.has(fid);
   });
 
+  // Debug: log feature loading info (useful when a map renders incorrectly)
+  console.log(`[geofill] map="${mapId}": loaded ${allFeatures.length} raw features, ${filteredFeatures.length} matched`);
+  if (allFeatures.length > 0) {
+    const f0 = allFeatures[0];
+    const coords0 = f0.geometry && f0.geometry.coordinates && f0.geometry.coordinates[0];
+    const first = coords0 && coords0[0];
+    console.log(`[geofill] first feature id=${f0.id} type=${f0.geometry && f0.geometry.type} first-coord=[${first ? first[0].toFixed(4) + ', ' + first[1].toFixed(4) : 'n/a'}]`);
+  }
+
   // Log any countries without a matching feature (for debugging)
   const foundFeatureIds = new Set(filteredFeatures.map(f => String(f.id)));
   mapConfig.countries.forEach(c => {
     if (!c.isMarker && c[featureIdField] && !foundFeatureIds.has(String(c[featureIdField]))) {
-      console.warn(`geofill: no TopoJSON feature found for ${c.name} (${featureIdField}: ${c[featureIdField]})`);
+      console.warn(`geofill: no map feature found for ${c.name} (${featureIdField}: ${c[featureIdField]})`);
     }
   });
 
@@ -232,7 +252,9 @@
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
-      const newProj = makeProjection(mapConfig.projectionConfig, svgEl.clientWidth, svgEl.clientHeight);
+      const newProj = geoDataFc
+        ? d3.geoMercator().fitSize([vbW, vbH], geoDataFc)
+        : makeProjection(mapConfig.projectionConfig, vbW, vbH);
       const newPathGen = d3.geoPath().projection(newProj);
 
       g.selectAll('path.country')
