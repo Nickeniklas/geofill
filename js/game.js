@@ -62,19 +62,6 @@
   };
 
   // ── 4. Helpers ─────────────────────────────────────────────────
-
-  // Swap [lat, lon] → [lon, lat] in-place for all coordinates in a FeatureCollection.
-  // Used for GeoJSON sources that use non-standard axis order (e.g. Helsinki WFS).
-  function flipGeoJsonCoords(fc) {
-    function flipRing(ring) { ring.forEach(c => { const t = c[0]; c[0] = c[1]; c[1] = t; }); }
-    function flipGeom(geom) {
-      if (!geom) return;
-      if (geom.type === 'Polygon')      geom.coordinates.forEach(flipRing);
-      else if (geom.type === 'MultiPolygon') geom.coordinates.forEach(p => p.forEach(flipRing));
-    }
-    fc.features.forEach(f => flipGeom(f.geometry));
-  }
-
   function formatTime(s) {
     const m = Math.floor(s / 60);
     const sec = s % 60;
@@ -146,7 +133,6 @@
   try {
     if (mapConfig.geoJsonUrl) {
       geoDataFc = await d3.json(mapConfig.geoJsonUrl);
-      if (mapConfig.flipCoordinates) flipGeoJsonCoords(geoDataFc);
       allFeatures = geoDataFc.features;
     } else {
       const topoData = await d3.json(mapConfig.topoJsonUrl);

@@ -249,6 +249,11 @@ Fuzzy near-miss only triggers on Enter, max Levenshtein distance 2.
 
 ## Future maps (not yet built)
 
+- Helsinki districts (peruspiirit, 34 districts) — **pending, will be added in next session**
+  - GeoJSON source: `avoindata:Piirijako_peruspiiri` via Helsinki WFS
+  - Data uses [lat, lon] axis order; coordinates must be flipped to [lon, lat] before passing to D3
+  - Use `d3.geoMercator().fitSize()` for projection (no hardcoded center/scale)
+  - District names are Finnish with ä/ö — `normalize()` already handles diacritic stripping both ways
 - Africa
 - Asia
 - Nordics / Scandinavia
