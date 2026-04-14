@@ -67,7 +67,6 @@ they are strings, zero-padded. `"008"` ≠ `"8"`. `"01"` ≠ `"1"`.
   "description": "44 sovereign countries of Europe",
   "topoJsonUrl": "...",
   "topoJsonObjectKey": "countries",
-  "featureIdField": "isoNumeric",
   "viewBox": "0 0 960 600",
   "projectionConfig": {
     "type": "mercator",
@@ -83,7 +82,6 @@ they are strings, zero-padded. `"008"` ≠ `"8"`. `"01"` ≠ `"1"`.
 
 - `id` — unique lowercase slug, used as `data-country-id` on SVG elements
 - `name` — the answer players must type; also the label shown on the map when found
-- `featureIdField` — which property on each country entry holds the TopoJSON feature ID. Defaults to `isoNumeric` (or `fips` for `map.id === 'usa'`).
 - `isoNumeric` — for Europe/Capitals (must match world-atlas feature.id exactly)
 - `fips` — for USA (must match us-atlas feature.id exactly)
 - `aliases` — alternate spellings/names accepted as correct (normalized, case-insensitive)
@@ -249,11 +247,6 @@ Fuzzy near-miss only triggers on Enter, max Levenshtein distance 2.
 
 ## Future maps (not yet built)
 
-- Helsinki districts (peruspiirit, 34 districts) — **pending, will be added in next session**
-  - GeoJSON source: `avoindata:Piirijako_peruspiiri` via Helsinki WFS
-  - Data uses [lat, lon] axis order; coordinates must be flipped to [lon, lat] before passing to D3
-  - Use `d3.geoMercator().fitSize()` for projection (no hardcoded center/scale)
-  - District names are Finnish with ä/ö — `normalize()` already handles diacritic stripping both ways
 - Africa
 - Asia
 - Nordics / Scandinavia
