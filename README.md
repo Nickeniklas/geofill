@@ -1,6 +1,6 @@
 # geofill
 
-A static browser geography game. Fill the map by typing country or state names.
+A static browser geography game. Fill the map by typing region names.
 Hosted on GitHub Pages — no build step, no npm, no framework.
 
 ## Play
@@ -34,18 +34,27 @@ python -m http.server 8080
 
 See `CLAUDE.md` for step-by-step instructions.
 
+## Maps
+
+| Map | Regions | Description |
+|-----|---------|-------------|
+| Europe | 44 | Sovereign countries of Europe |
+| European Capitals | 44 | Capital cities of Europe |
+| European Seas | 8 | Major seas and bodies of water around Europe |
+| United States | 50 | US states |
+
 ## Game modes
 
 | Mode | Description |
 |------|-------------|
-| Classic | Type country names, timer counts up |
-| Timer Challenge | Same as Classic + personal best tracking |
+| Classic | Type region names, timer counts up from first keystroke |
 | Multiple Choice | Click the correct name from 4 options |
 
 ## URL format
 
 ```
 game.html?map=europe&mode=classic
-game.html?map=usa&mode=timer
-game.html?map=europe&mode=choice
+game.html?map=europe-capitals&mode=choice
+game.html?map=europe-seas&mode=classic
+game.html?map=usa&mode=choice
 ```

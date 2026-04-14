@@ -23,6 +23,7 @@ js/leaderboard.js        Supabase read/write, table renderer
 js/fuzzy.js              Levenshtein distance, normalize(), findNearMiss(), findExactMatch()
 maps/europe.json         44 European countries (39 polygons + 5 point markers)
 maps/europe-capitals.json  44 European capital cities (same shapes as europe.json)
+maps/europe-seas.json    8 European seas/bodies of water (all circle markers, backdrop mode)
 maps/usa.json            50 US states
 assets/favicon.ico
 ```
@@ -51,6 +52,7 @@ assets/favicon.ico
 | Map | URL | Object key | Feature ID format |
 |-----|-----|-----------|-------------------|
 | Europe / European Capitals | `https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json` | `countries` | 3-digit zero-padded ISO numeric string, e.g. `"008"` |
+| European Seas | same as Europe (backdrop only — no feature matching) | `countries` | n/a (all entries are `isMarker`) |
 | USA | `https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json` | `states` | 2-digit zero-padded FIPS string, e.g. `"01"` |
 
 **Critical:** The `isoNumeric` / `fips` fields in map JSON must exactly match the feature IDs —
@@ -242,6 +244,33 @@ Fuzzy near-miss only triggers on Enter, max Levenshtein distance 2.
 | Found region | `.country.found` | `#d4614a` (coral) |
 | Highlighted (choice/hint) | `.country.hint` | `#f0b429` (amber) |
 | Gave-up revealed | `.country.gave-up` | `#b0bec5` (muted gray) |
+| Backdrop country (seas map) | `.backdrop-country` | `#d6dfe8` (dim muted) |
+| Unfound sea marker | `.sea-marker` | `#8ab0c8` (dim ocean blue-gray) |
+| Found sea marker | `.sea-marker.found` | `#1a6ea8` (deep ocean blue) |
+
+---
+
+## Backdrop Mode (seas/overlay maps)
+
+Some maps render a non-interactive country backdrop and place circular zone markers on top.
+These maps set `"backdropMode": true` and `"backdropMapId": "<map-id>"` in their JSON.
+
+- `backdropMapId` — the ID of a map whose countries are loaded solely as a passive backdrop
+- Backdrop paths get class `.backdrop-country` (dim fill, no hover, no game interaction)
+- All `countries` entries in a backdrop-mode map must be `isMarker: true` with `lat`/`lng`
+- An optional `radius` field on each entry sets the circle size (default 5)
+- Sea labels are centered inside their circles (`y = center_y + 3`)
+- On correct answer, a D3-animated ripple ring expands from the circle and fades out
+- The choice-mode prompt updates to "Which sea is highlighted?" automatically
+
+### Sea marker color reference
+
+| State | Fill |
+|-------|------|
+| Unfound | `#8ab0c8` at 45% opacity |
+| Found | `#1a6ea8` (deep blue) |
+| Hint / highlighted | `#f0b429` (amber, pulsing) |
+| Gave-up | `#b0bec5` (muted gray) |
 
 ---
 

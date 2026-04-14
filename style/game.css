@@ -492,6 +492,69 @@ circle.country {
   line-height: 1.7;
 }
 
+/* ── Backdrop country paths (seas/overlay maps) ───────────────── */
+.backdrop-country {
+  fill: #d6dfe8;
+  stroke: #b8c8d8;
+  stroke-width: 0.5px;
+  pointer-events: none;
+}
+
+/* ── Sea Marker circles ────────────────────────────────────────── */
+circle.sea-marker {
+  fill: #8ab0c8;
+  stroke: #6090b0;
+  stroke-width: 1.5px;
+  opacity: 0.45;
+  transition: fill 0.5s ease, opacity 0.5s ease, stroke 0.5s ease;
+  cursor: default;
+}
+
+circle.sea-marker.found {
+  fill: #1a6ea8;
+  stroke: #0d4f7a;
+  stroke-width: 2px;
+  opacity: 1;
+}
+
+circle.sea-marker.hint {
+  fill: #f0b429;
+  stroke: #c8901a;
+  opacity: 0.85;
+  animation: sea-pulse 1.4s ease-in-out infinite;
+}
+
+circle.sea-marker.gave-up {
+  fill: #b0bec5 !important;
+  stroke: #78909c !important;
+  opacity: 0.75;
+}
+
+circle.sea-marker.flash-correct {
+  fill: #4db8ff !important;
+  transition: fill 0s;
+}
+
+circle.sea-marker.flash-wrong {
+  fill: #c0392b !important;
+  transition: fill 0s;
+}
+
+@keyframes sea-pulse {
+  0%, 100% { opacity: 0.85; }
+  50%       { opacity: 0.5; }
+}
+
+/* ── Sea labels (larger, centered on circle) ───────────────────── */
+.sea-label {
+  font-size: 8px;
+  font-weight: 700;
+  fill: #e8f4fd;
+  stroke: rgba(0,0,0,0.3);
+  stroke-width: 2px;
+  letter-spacing: 0.04em;
+}
+
 /* ── Responsive ────────────────────────────────────────────────── */
 @media (max-width: 600px) {
   .game-topbar { padding: 8px 16px; gap: 10px; }

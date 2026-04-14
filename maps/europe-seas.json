@@ -1,0 +1,89 @@
+{
+  "id": "europe-seas",
+  "label": "European Seas",
+  "description": "8 major seas and bodies of water around Europe",
+  "topoJsonUrl": "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
+  "topoJsonObjectKey": "countries",
+  "viewBox": "0 0 960 600",
+  "projectionConfig": {
+    "type": "mercator",
+    "center": [15, 54],
+    "scale": 500
+  },
+  "backdropMode": true,
+  "backdropMapId": "europe",
+  "countries": [
+    {
+      "id": "mediterranean-sea",
+      "name": "Mediterranean Sea",
+      "isMarker": true,
+      "lat": 38.0,
+      "lng": 15.0,
+      "radius": 20,
+      "aliases": ["mediterranean"]
+    },
+    {
+      "id": "black-sea",
+      "name": "Black Sea",
+      "isMarker": true,
+      "lat": 43.0,
+      "lng": 33.0,
+      "radius": 13,
+      "aliases": ["black"]
+    },
+    {
+      "id": "baltic-sea",
+      "name": "Baltic Sea",
+      "isMarker": true,
+      "lat": 58.5,
+      "lng": 19.0,
+      "radius": 12,
+      "aliases": ["baltic"]
+    },
+    {
+      "id": "north-sea",
+      "name": "North Sea",
+      "isMarker": true,
+      "lat": 56.0,
+      "lng": 3.5,
+      "radius": 12,
+      "aliases": ["northern sea"]
+    },
+    {
+      "id": "adriatic-sea",
+      "name": "Adriatic Sea",
+      "isMarker": true,
+      "lat": 43.5,
+      "lng": 15.5,
+      "radius": 8,
+      "aliases": ["adriatic"]
+    },
+    {
+      "id": "aegean-sea",
+      "name": "Aegean Sea",
+      "isMarker": true,
+      "lat": 39.0,
+      "lng": 25.0,
+      "radius": 10,
+      "aliases": ["aegean"]
+    },
+    {
+      "id": "norwegian-sea",
+      "name": "Norwegian Sea",
+      "isMarker": true,
+      "lat": 66.0,
+      "lng": 3.0,
+      "radius": 15,
+      "aliases": ["norwegian"]
+    },
+    {
+      "id": "caspian-sea",
+      "name": "Caspian Sea",
+      "isMarker": true,
+      "lat": 41.5,
+      "lng": 51.0,
+      "radius": 11,
+      "aliases": ["caspian", "caspian lake"]
+    }
+  ]
+}

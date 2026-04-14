@@ -126,14 +126,25 @@
   svg.on('dblclick.zoom', null);
   svg.on('dblclick', () => svg.transition().duration(400).call(zoom.transform, d3.zoomIdentity));
 
-  // Fetch TopoJSON
-  let topoData;
+  // Fetch TopoJSON (and backdrop config in parallel if needed)
+  let topoData, backdropConfig;
   try {
-    topoData = await d3.json(mapConfig.topoJsonUrl);
+    const fetches = [d3.json(mapConfig.topoJsonUrl)];
+    if (mapConfig.backdropMapId) {
+      fetches.push(
+        fetch(`maps/${mapConfig.backdropMapId}.json`)
+          .then(r => r.ok ? r.json() : null)
+          .catch(() => null)
+      );
+    }
+    const results = await Promise.all(fetches);
+    topoData = results[0];
+    backdropConfig = results[1] || null;
   } catch (e) {
     showError(`Could not load map data: ${e.message}`);
     return;
   }
+  const backdropCountries = backdropConfig ? backdropConfig.countries : [];
 
   // Extract and filter features
   const objKey = mapConfig.topoJsonObjectKey;
@@ -162,6 +173,22 @@
     }
   });
 
+  // Render backdrop country paths (seas/overlay maps — rendered first, below sea markers)
+  if (mapConfig.backdropMode && backdropCountries.length > 0) {
+    const backdropByFeatureId = new Map();
+    backdropCountries.forEach(c => {
+      if (!c.isMarker && c.isoNumeric) {
+        backdropByFeatureId.set(String(c.isoNumeric), c);
+      }
+    });
+    const backdropFeatures = allFeatures.filter(f => backdropByFeatureId.has(String(f.id)));
+    g.selectAll('path.backdrop-country')
+      .data(backdropFeatures)
+      .join('path')
+      .attr('class', 'backdrop-country')
+      .attr('d', d => pathGen(d) || '');
+  }
+
   // Render country paths
   g.selectAll('path.country')
     .data(filteredFeatures)
@@ -189,14 +216,14 @@
       return c ? c.name : '';
     });
 
-  // Render marker circles (microstates, Kosovo)
+  // Render marker circles (microstates, Kosovo, sea zones)
   const markerCountries = mapConfig.countries.filter(c => c.isMarker);
   g.selectAll('circle.country')
     .data(markerCountries)
     .join('circle')
-    .attr('class', 'country')
+    .attr('class', d => mapConfig.backdropMode ? 'country sea-marker' : 'country')
     .attr('data-country-id', d => d.id)
-    .attr('r', 5)
+    .attr('r', d => d.radius || 5)
     .attr('cx', d => {
       const pt = proj([d.lng, d.lat]);
       return pt ? pt[0] : -999;
@@ -208,11 +235,13 @@
     .append('title')
     .text(d => d.name);
 
-  // Render labels for marker countries (offset above the circle)
+  // Render labels for marker countries
   g.selectAll('text.marker-label')
     .data(markerCountries)
     .join('text')
-    .attr('class', 'country-label marker-label')
+    .attr('class', d => mapConfig.backdropMode
+      ? 'country-label marker-label sea-label'
+      : 'country-label marker-label')
     .attr('data-label-id', d => d.id)
     .attr('x', d => {
       const pt = proj([d.lng, d.lat]);
@@ -220,7 +249,8 @@
     })
     .attr('y', d => {
       const pt = proj([d.lng, d.lat]);
-      return pt ? pt[1] - 10 : -999;
+      // Sea labels: centered inside circle; microstate labels: above circle
+      return pt ? pt[1] + (mapConfig.backdropMode ? 3 : -10) : -999;
     })
     .text(d => d.name);
 
@@ -235,6 +265,9 @@
       const newProj = makeProjection(mapConfig.projectionConfig, svgEl.clientWidth, svgEl.clientHeight);
       const newPathGen = d3.geoPath().projection(newProj);
 
+      g.selectAll('path.backdrop-country')
+        .attr('d', d => newPathGen(d) || '');
+
       g.selectAll('path.country')
         .attr('d', d => newPathGen(d) || '');
 
@@ -248,13 +281,24 @@
 
       g.selectAll('text.marker-label')
         .attr('x', d => { const pt = newProj([d.lng, d.lat]); return pt ? pt[0] : -999; })
-        .attr('y', d => { const pt = newProj([d.lng, d.lat]); return pt ? pt[1] - 10 : -999; });
+        .attr('y', d => {
+          const pt = newProj([d.lng, d.lat]);
+          return pt ? pt[1] + (mapConfig.backdropMode ? 3 : -10) : -999;
+        });
     }, 200);
   });
 
   // ── 8. Mode Setup ──────────────────────────────────────────────
   const giveUpBtn = document.getElementById('give-up-btn');
   if (giveUpBtn) giveUpBtn.addEventListener('click', triggerGiveUp);
+
+  // Update choice prompt text for non-country maps
+  if (mapConfig.backdropMode) {
+    const choicePromptEl = document.querySelector('.choice-prompt');
+    if (choicePromptEl) choicePromptEl.textContent = 'Which sea is highlighted?';
+    const countryInputEl = document.getElementById('country-input');
+    if (countryInputEl) countryInputEl.placeholder = 'Type a sea name…';
+  }
 
   if (mode === 'choice') {
     if (inputArea)  inputArea.style.display  = 'none';
@@ -345,9 +389,29 @@
     // Show label
     d3.select(`[data-label-id="${countryId}"]`).classed('visible', true);
 
-    // Brief flash-correct on the path
+    // Brief flash-correct on the path/circle
     el.classed('flash-correct', true);
     setTimeout(() => el.classed('flash-correct', false), 500);
+
+    // Sea ripple ring animation
+    if (state.mapConfig.backdropMode) {
+      const seaCx = parseFloat(el.attr('cx'));
+      const seaCy = parseFloat(el.attr('cy'));
+      const seaR  = parseFloat(el.attr('r')) || 8;
+      g.append('circle')
+        .attr('cx', seaCx).attr('cy', seaCy)
+        .attr('r', seaR)
+        .attr('fill', 'none')
+        .attr('stroke', '#4db8ff')
+        .attr('stroke-width', 3)
+        .attr('opacity', 0.75)
+        .attr('pointer-events', 'none')
+        .transition().duration(1300)
+        .attr('r', seaR + 28)
+        .attr('stroke-width', 0.5)
+        .attr('opacity', 0)
+        .on('end', function() { d3.select(this).remove(); });
+    }
 
     // Update counters
     if (foundCountEl) foundCountEl.textContent = state.found.size;
