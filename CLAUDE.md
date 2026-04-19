@@ -195,7 +195,7 @@ Must use HTTP — not `file://` — because the game fetches JSON files and CDN 
 | mode param | Name | Behaviour |
 |-----------|------|-----------|
 | `classic` | Classic | Free typing, timer counts up from first keystroke |
-| `choice` | Multiple Choice | Map highlights a random region in amber, 4 buttons appear |
+| `choice` | Multiple Choice | Map highlights a random region in amber, 4 buttons appear. Wrong answer → 3s button lockout + +5s time penalty |
 
 URL format: `game.html?map=europe&mode=classic`
 

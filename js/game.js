@@ -58,8 +58,12 @@
     elapsedSeconds: 0,
     hintedIds:     new Set(),
     hintInterval:  null,
-    hintTimeout:   null
+    hintTimeout:   null,
+    choiceLocked:  false
   };
+
+  const WRONG_LOCKOUT_MS = 3000;
+  const WRONG_TIME_PENALTY_S = 5;
 
   // ── 4. Helpers ─────────────────────────────────────────────────
   function formatTime(s) {
@@ -518,9 +522,19 @@
     });
   }
 
+  function showPenaltyFlash() {
+    const el = document.getElementById('penalty-flash');
+    if (!el) return;
+    el.classList.remove('animate');
+    void el.offsetWidth;
+    el.classList.add('animate');
+  }
+
   function handleChoiceClick(chosen, target) {
+    if (state.choiceLocked) return;
     const btn = document.querySelector(`.choice-btn[data-country-id="${chosen}"]`);
     if (chosen === target) {
+      state.choiceLocked = false;
       if (btn) {
         btn.classList.add('flash-correct');
         setTimeout(() => btn.classList.remove('flash-correct'), 500);
@@ -530,12 +544,27 @@
     } else {
       if (btn) {
         btn.classList.add('flash-wrong');
+        btn.classList.add('shake');
         setTimeout(() => btn.classList.remove('flash-wrong'), 500);
+        setTimeout(() => btn.classList.remove('shake'), 400);
       }
       // Flash the map element too
       const el = d3.select(`[data-country-id="${chosen}"]`);
       el.classed('flash-wrong', true);
       setTimeout(() => el.classed('flash-wrong', false), 500);
+
+      // Apply time penalty and lockout
+      if (state.startTime !== null) {
+        state.startTime -= WRONG_TIME_PENALTY_S * 1000;
+      }
+      showPenaltyFlash();
+      state.choiceLocked = true;
+      const choiceArea = document.getElementById('choice-area');
+      if (choiceArea) choiceArea.classList.add('locked');
+      setTimeout(() => {
+        state.choiceLocked = false;
+        if (choiceArea) choiceArea.classList.remove('locked');
+      }, WRONG_LOCKOUT_MS);
     }
   }
 

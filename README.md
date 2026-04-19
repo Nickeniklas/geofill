@@ -48,7 +48,7 @@ See `CLAUDE.md` for step-by-step instructions.
 | Mode | Description |
 |------|-------------|
 | Classic | Type region names, timer counts up from first keystroke |
-| Multiple Choice | Click the correct name from 4 options |
+| Multiple Choice | Click the correct name from 4 options. Wrong answers lock the buttons for 3 seconds and add a +5s time penalty |
 
 ## URL format
 

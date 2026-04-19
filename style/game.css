@@ -68,6 +68,7 @@
   display: flex;
   align-items: center;
   gap: 20px;
+  position: relative;
 }
 
 .game-timer {
@@ -311,6 +312,43 @@ circle.country {
   border-color: var(--red);
   background: rgba(192,57,43,0.08);
   color: var(--red);
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-6px); }
+  40%       { transform: translateX(6px); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}
+.choice-btn.shake {
+  animation: shake 0.4s ease;
+}
+
+#choice-area.locked .choice-btn {
+  opacity: 0.45;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+#penalty-flash {
+  position: absolute;
+  right: 0;
+  top: -4px;
+  color: #e74c3c;
+  font-weight: 700;
+  font-size: 0.95rem;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+}
+@keyframes penalty-float {
+  0%   { opacity: 1; transform: translateY(0); }
+  80%  { opacity: 1; transform: translateY(-18px); }
+  100% { opacity: 0; transform: translateY(-24px); }
+}
+#penalty-flash.animate {
+  animation: penalty-float 0.9s ease forwards;
 }
 
 /* ── Completion Modal ──────────────────────────────────────────── */
