@@ -414,6 +414,19 @@ circle.country {
 #player-name-input::placeholder { color: var(--text-muted); }
 #player-name-input:focus { border-color: var(--accent); }
 
+@keyframes submit-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(212, 97, 74, 0.45); }
+  50%       { box-shadow: 0 0 0 7px rgba(212, 97, 74, 0); }
+}
+
+#submit-score-btn {
+  animation: submit-pulse 2s ease-in-out infinite;
+}
+
+#submit-score-btn:disabled {
+  animation: none;
+}
+
 .modal-error {
   font-size: 13px;
   color: var(--red);
