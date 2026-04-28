@@ -248,6 +248,14 @@ Fuzzy near-miss only triggers on Enter, max Levenshtein distance 2.
 | Unfound sea marker | `.sea-marker` | `#8ab0c8` (dim ocean blue-gray) |
 | Found sea marker | `.sea-marker.found` | `#1a6ea8` (deep ocean blue) |
 
+### Completion modal buttons
+
+| Button | Style | Notes |
+|--------|-------|-------|
+| Submit to Leaderboard | `#2e7d52` green (`var(--green)`) | Distinct from other buttons; has a repeating green glow pulse animation (`submit-pulse`) to draw attention. Animation stops on submit (`:disabled`). |
+| Play Again | coral `.btn` | Standard accent button |
+| Change Map | `.btn-muted` | Subdued/secondary |
+
 ---
 
 ## Backdrop Mode (seas/overlay maps)
