@@ -206,9 +206,8 @@ URL format: `game.html?map=europe&mode=classic`
 A "Give Up" button is always visible in the bottom panel during gameplay.
 
 - Stops the timer and reveals all unfound regions with a gray fill (`#b0bec5`) and name labels
-- Opens the completion modal titled "Gave Up" (no personal best logic)
+- Opens the completion modal titled "Gave Up"
 - Score is still submitted to the same leaderboard, marked with `gave_up: true`
-- Personal best is **never** updated on a gave-up run
 
 ---
 
